@@ -2,131 +2,131 @@
 /**
  * Dashboard screen.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$mwright_counts       = MWRIGHT_Template_Post_Type::counts();
-$mwright_assigned_ids = MWRIGHT_CF7_Bridge::assigned_template_ids();
-$mwright_forms        = MWRIGHT_CF7_Bridge::forms();
-$mwright_assignments  = MWRIGHT_CF7_Bridge::assignments();
+$mdmd_counts       = MDMD_Template_Post_Type::counts();
+$mdmd_assigned_ids = MDMD_CF7_Bridge::assigned_template_ids();
+$mdmd_forms        = MDMD_CF7_Bridge::forms();
+$mdmd_assignments  = MDMD_CF7_Bridge::assignments();
 
-$mwright_cards = array(
+$mdmd_cards = array(
 	array(
 		'icon'  => 'dashicons-email-alt',
-		'count' => $mwright_counts['total'],
-		'label' => __( 'Total Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Every template in your library.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates' ),
-		'cta'   => __( 'Manage templates', 'mailwright-for-contact-form-7' ),
+		'count' => $mdmd_counts['total'],
+		'label' => __( 'Total Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Every template in your library.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates' ),
+		'cta'   => __( 'Manage templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-yes-alt',
-		'count' => $mwright_counts['publish'],
-		'label' => __( 'Active Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Ready to be assigned to a form.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates', array( 'filter' => 'publish' ) ),
-		'cta'   => __( 'View active', 'mailwright-for-contact-form-7' ),
+		'count' => $mdmd_counts['publish'],
+		'label' => __( 'Active Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Ready to be assigned to a form.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates', array( 'filter' => 'publish' ) ),
+		'cta'   => __( 'View active', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-admin-links',
-		'count' => count( $mwright_assignments ),
-		'label' => __( 'Assigned Forms', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Contact forms using a template.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'assignments' ),
-		'cta'   => __( 'View assignments', 'mailwright-for-contact-form-7' ),
+		'count' => count( $mdmd_assignments ),
+		'label' => __( 'Assigned Forms', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Contact forms using a template.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'assignments' ),
+		'cta'   => __( 'View assignments', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-archive',
-		'count' => max( 0, $mwright_counts['total'] - count( $mwright_assigned_ids ) ),
-		'label' => __( 'Unused Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Not assigned to any form yet.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates', array( 'filter' => 'unused' ) ),
-		'cta'   => __( 'View unused', 'mailwright-for-contact-form-7' ),
+		'count' => max( 0, $mdmd_counts['total'] - count( $mdmd_assigned_ids ) ),
+		'label' => __( 'Unused Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Not assigned to any form yet.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates', array( 'filter' => 'unused' ) ),
+		'cta'   => __( 'View unused', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-feedback',
-		'count' => count( $mwright_forms ),
-		'label' => __( 'Contact Forms', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Forms detected in Contact Form 7.', 'mailwright-for-contact-form-7' ),
+		'count' => count( $mdmd_forms ),
+		'label' => __( 'Contact Forms', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Forms detected in Contact Form 7.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		'link'  => admin_url( 'admin.php?page=wpcf7' ),
-		'cta'   => __( 'Open Contact Form 7', 'mailwright-for-contact-form-7' ),
+		'cta'   => __( 'Open Contact Form 7', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-editor-code',
-		'count' => MWRIGHT_Template_Post_Type::count_by_type( 'html' ),
-		'label' => __( 'HTML Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Designed, branded email layouts.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates', array( 'filter' => 'html' ) ),
-		'cta'   => __( 'View HTML', 'mailwright-for-contact-form-7' ),
+		'count' => MDMD_Template_Post_Type::count_by_type( 'html' ),
+		'label' => __( 'HTML Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Designed, branded email layouts.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates', array( 'filter' => 'html' ) ),
+		'cta'   => __( 'View HTML', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-editor-alignleft',
-		'count' => MWRIGHT_Template_Post_Type::count_by_type( 'text' ),
-		'label' => __( 'Plain Text Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Readable in every mail client.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates', array( 'filter' => 'text' ) ),
-		'cta'   => __( 'View plain text', 'mailwright-for-contact-form-7' ),
+		'count' => MDMD_Template_Post_Type::count_by_type( 'text' ),
+		'label' => __( 'Plain Text Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Readable in every mail client.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates', array( 'filter' => 'text' ) ),
+		'cta'   => __( 'View plain text', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 	array(
 		'icon'  => 'dashicons-paperclip',
-		'count' => MWRIGHT_Template_Post_Type::count_with_files(),
-		'label' => __( 'File Upload Templates', 'mailwright-for-contact-form-7' ),
-		'desc'  => __( 'Templates that attach uploaded files.', 'mailwright-for-contact-form-7' ),
-		'link'  => MWRIGHT_Plugin::url( 'templates', array( 'filter' => 'files' ) ),
-		'cta'   => __( 'View file templates', 'mailwright-for-contact-form-7' ),
+		'count' => MDMD_Template_Post_Type::count_with_files(),
+		'label' => __( 'File Upload Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'desc'  => __( 'Templates that attach uploaded files.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+		'link'  => MDMD_Plugin::url( 'templates', array( 'filter' => 'files' ) ),
+		'cta'   => __( 'View file templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
 	),
 );
 ?>
-<div class="wrap mwright">
+<div class="wrap mdmd">
 
 	<?php
-	MWRIGHT_Admin::header(
-		__( 'Dashboard', 'mailwright-for-contact-form-7' ),
+	MDMD_Admin::header(
+		__( 'Dashboard', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		sprintf(
-			'<a class="mwright-btn mwright-btn--primary" href="%s"><span class="dashicons dashicons-plus-alt2"></span>%s</a>',
-			esc_url( MWRIGHT_Plugin::url( 'template-edit' ) ),
-			esc_html__( 'Add New Template', 'mailwright-for-contact-form-7' )
+			'<a class="mdmd-btn mdmd-btn--primary" href="%s"><span class="dashicons dashicons-plus-alt2"></span>%s</a>',
+			esc_url( MDMD_Plugin::url( 'template-edit' ) ),
+			esc_html__( 'Add New Template', 'manpreetdev-mail-designer-for-contact-form-7' )
 		)
 	);
 
-	MWRIGHT_Admin::flash();
+	MDMD_Admin::flash();
 	?>
 
-	<?php if ( 0 === $mwright_counts['total'] ) : ?>
+	<?php if ( 0 === $mdmd_counts['total'] ) : ?>
 
-		<div class="mwright-empty">
+		<div class="mdmd-empty">
 			<span class="dashicons dashicons-email-alt" aria-hidden="true"></span>
-			<h2><?php esc_html_e( 'No templates yet.', 'mailwright-for-contact-form-7' ); ?></h2>
-			<p><?php esc_html_e( 'Create your first reusable Contact Form 7 email template.', 'mailwright-for-contact-form-7' ); ?></p>
-			<a class="mwright-btn mwright-btn--primary" href="<?php echo esc_url( MWRIGHT_Plugin::url( 'template-edit' ) ); ?>">
-				<?php esc_html_e( 'Create Template', 'mailwright-for-contact-form-7' ); ?>
+			<h2><?php esc_html_e( 'No templates yet.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2>
+			<p><?php esc_html_e( 'Create your first reusable Contact Form 7 email template.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></p>
+			<a class="mdmd-btn mdmd-btn--primary" href="<?php echo esc_url( MDMD_Plugin::url( 'template-edit' ) ); ?>">
+				<?php esc_html_e( 'Create Template', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 			</a>
 		</div>
 
 	<?php else : ?>
 
-		<div class="mwright-grid">
-			<?php foreach ( $mwright_cards as $mwright_card ) : ?>
-				<div class="mwright-card mwright-stat">
-					<div class="mwright-stat__top">
-						<span class="dashicons <?php echo esc_attr( $mwright_card['icon'] ); ?>" aria-hidden="true"></span>
-						<span class="mwright-stat__count"><?php echo esc_html( number_format_i18n( $mwright_card['count'] ) ); ?></span>
+		<div class="mdmd-grid">
+			<?php foreach ( $mdmd_cards as $mdmd_card ) : ?>
+				<div class="mdmd-card mdmd-stat">
+					<div class="mdmd-stat__top">
+						<span class="dashicons <?php echo esc_attr( $mdmd_card['icon'] ); ?>" aria-hidden="true"></span>
+						<span class="mdmd-stat__count"><?php echo esc_html( number_format_i18n( $mdmd_card['count'] ) ); ?></span>
 					</div>
-					<h2 class="mwright-stat__label"><?php echo esc_html( $mwright_card['label'] ); ?></h2>
-					<p class="mwright-muted"><?php echo esc_html( $mwright_card['desc'] ); ?></p>
-					<a class="mwright-stat__link" href="<?php echo esc_url( $mwright_card['link'] ); ?>">
-						<?php echo esc_html( $mwright_card['cta'] ); ?> <span aria-hidden="true">&rarr;</span>
+					<h2 class="mdmd-stat__label"><?php echo esc_html( $mdmd_card['label'] ); ?></h2>
+					<p class="mdmd-muted"><?php echo esc_html( $mdmd_card['desc'] ); ?></p>
+					<a class="mdmd-stat__link" href="<?php echo esc_url( $mdmd_card['link'] ); ?>">
+						<?php echo esc_html( $mdmd_card['cta'] ); ?> <span aria-hidden="true">&rarr;</span>
 					</a>
 				</div>
 			<?php endforeach; ?>
 		</div>
 
 		<?php
-		$mwright_recent = get_posts(
+		$mdmd_recent = get_posts(
 			array(
-				'post_type'      => MWRIGHT_Template_Post_Type::POST_TYPE,
+				'post_type'      => MDMD_Template_Post_Type::POST_TYPE,
 				'post_status'    => array( 'publish', 'draft', 'private' ),
 				'posts_per_page' => 5,
 				'orderby'        => 'modified',
@@ -135,52 +135,52 @@ $mwright_cards = array(
 		);
 		?>
 
-		<?php if ( $mwright_recent ) : ?>
-			<div class="mwright-card mwright-card--flush">
-				<div class="mwright-card__head">
-					<h2><?php esc_html_e( 'Recently updated', 'mailwright-for-contact-form-7' ); ?></h2>
-					<a href="<?php echo esc_url( MWRIGHT_Plugin::url( 'templates' ) ); ?>">
-						<?php esc_html_e( 'View all', 'mailwright-for-contact-form-7' ); ?>
+		<?php if ( $mdmd_recent ) : ?>
+			<div class="mdmd-card mdmd-card--flush">
+				<div class="mdmd-card__head">
+					<h2><?php esc_html_e( 'Recently updated', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2>
+					<a href="<?php echo esc_url( MDMD_Plugin::url( 'templates' ) ); ?>">
+						<?php esc_html_e( 'View all', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 					</a>
 				</div>
-				<table class="mwright-table">
+				<table class="mdmd-table">
 					<thead>
 						<tr>
-							<th scope="col"><?php esc_html_e( 'Template', 'mailwright-for-contact-form-7' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Status', 'mailwright-for-contact-form-7' ); ?></th>
-							<th scope="col"><?php esc_html_e( 'Updated', 'mailwright-for-contact-form-7' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Template', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Status', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Updated', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ( $mwright_recent as $post ) : ?>
+						<?php foreach ( $mdmd_recent as $post ) : ?>
 							<?php
-							$mwright_modifier = match ( $post->post_status ) {
+							$mdmd_modifier = match ( $post->post_status ) {
 								'publish' => 'success',
 								'private' => 'neutral',
 								default   => 'warning',
 							};
 							?>
 							<tr>
-								<td data-label="<?php esc_attr_e( 'Template', 'mailwright-for-contact-form-7' ); ?>">
-									<a href="<?php echo esc_url( MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $post->ID ) ) ); ?>">
+								<td data-label="<?php esc_attr_e( 'Template', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
+									<a href="<?php echo esc_url( MDMD_Plugin::url( 'template-edit', array( 'template' => $post->ID ) ) ); ?>">
 										<?php echo esc_html( $post->post_title ); ?>
 									</a>
 								</td>
-								<td data-label="<?php esc_attr_e( 'Status', 'mailwright-for-contact-form-7' ); ?>">
-									<span class="mwright-badge mwright-badge--<?php echo esc_attr( $mwright_modifier ); ?>">
-										<?php echo esc_html( MWRIGHT_Template_Post_Type::status_label( $post->post_status ) ); ?>
+								<td data-label="<?php esc_attr_e( 'Status', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
+									<span class="mdmd-badge mdmd-badge--<?php echo esc_attr( $mdmd_modifier ); ?>">
+										<?php echo esc_html( MDMD_Template_Post_Type::status_label( $post->post_status ) ); ?>
 									</span>
 								</td>
-								<td data-label="<?php esc_attr_e( 'Updated', 'mailwright-for-contact-form-7' ); ?>">
+								<td data-label="<?php esc_attr_e( 'Updated', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
 									<?php
-									$mwright_timestamp = get_post_timestamp( $post, 'modified' );
+									$mdmd_timestamp = get_post_timestamp( $post, 'modified' );
 
 									echo esc_html(
-										$mwright_timestamp
+										$mdmd_timestamp
 											? sprintf(
 												/* translators: %s: human-readable time difference */
-												__( '%s ago', 'mailwright-for-contact-form-7' ),
-												human_time_diff( $mwright_timestamp )
+												__( '%s ago', 'manpreetdev-mail-designer-for-contact-form-7' ),
+												human_time_diff( $mdmd_timestamp )
 											)
 											: '—'
 									);
@@ -195,13 +195,13 @@ $mwright_cards = array(
 
 	<?php endif; ?>
 
-	<?php if ( ! $mwright_forms ) : ?>
-		<div class="mwright-alert mwright-alert--warning">
+	<?php if ( ! $mdmd_forms ) : ?>
+		<div class="mdmd-alert mdmd-alert--warning">
 			<?php
 			printf(
 				/* translators: %s: link to Contact Form 7 */
-				esc_html__( 'No contact forms found yet. %s to create one before assigning templates.', 'mailwright-for-contact-form-7' ),
-				'<a href="' . esc_url( admin_url( 'admin.php?page=wpcf7-new' ) ) . '">' . esc_html__( 'Open Contact Form 7', 'mailwright-for-contact-form-7' ) . '</a>'
+				esc_html__( 'No contact forms found yet. %s to create one before assigning templates.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+				'<a href="' . esc_url( admin_url( 'admin.php?page=wpcf7-new' ) ) . '">' . esc_html__( 'Open Contact Form 7', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</a>'
 			);
 			?>
 		</div>

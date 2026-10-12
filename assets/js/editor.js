@@ -1,5 +1,5 @@
 /**
- * Mailwright for Contact Form 7 — template editor.
+ * ManpreetDev Mail Designer for Contact Form 7 — template editor.
  *
  * Uses the CodeMirror instance WordPress core already ships. When the user has
  * syntax highlighting turned off, everything falls back to the plain textarea.
@@ -7,14 +7,14 @@
 ( function () {
 	'use strict';
 
-	const root = document.querySelector( '.mwright-editor' );
+	const root = document.querySelector( '.mdmd-editor' );
 
-	if ( ! root || ! window.mwrightUI ) {
+	if ( ! root || ! window.mdmdUI ) {
 		return;
 	}
 
-	const ui = window.mwrightUI;
-	const i18n = window.mwright.i18n;
+	const ui = window.mdmdUI;
+	const i18n = window.mdmd.i18n;
 
 	const nameInput = root.querySelector( '[data-field="name"]' );
 	const bodyArea = root.querySelector( '[data-field="body"]' );
@@ -23,7 +23,7 @@
 	const statusBadge = root.querySelector( '[data-status-badge]' );
 	const dirtyFlag = root.querySelector( '[data-dirty-flag]' );
 	const formSelect = root.querySelector( '[data-field="form_context"]' );
-	const tagSearch = root.querySelector( '#mwright-tag-search' );
+	const tagSearch = root.querySelector( '#mdmd-tag-search' );
 	const formTagList = root.querySelector( '[data-form-tags]' );
 	const fileTagList = root.querySelector( '[data-file-tags]' );
 	const fileGroup = root.querySelector( '[data-file-group]' );
@@ -45,8 +45,8 @@
 	/* Editor set-up                                                       */
 	/* ------------------------------------------------------------------ */
 
-	if ( window.mwrightEditor && window.mwrightEditor.codeEditor && window.wp && window.wp.codeEditor ) {
-		editor = window.wp.codeEditor.initialize( bodyArea, window.mwrightEditor.codeEditor ).codemirror;
+	if ( window.mdmdEditor && window.mdmdEditor.codeEditor && window.wp && window.wp.codeEditor ) {
+		editor = window.wp.codeEditor.initialize( bodyArea, window.mdmdEditor.codeEditor ).codemirror;
 
 		editor.on( 'change', () => {
 			markDirty();
@@ -180,7 +180,7 @@
 		let recent = [];
 
 		try {
-			recent = JSON.parse( window.localStorage.getItem( 'mwrightRecentTags' ) || '[]' );
+			recent = JSON.parse( window.localStorage.getItem( 'mdmdRecentTags' ) || '[]' );
 		} catch ( error ) {
 			recent = [];
 		}
@@ -188,7 +188,7 @@
 		recent = [ tag ].concat( recent.filter( ( item ) => item !== tag ) ).slice( 0, 6 );
 
 		try {
-			window.localStorage.setItem( 'mwrightRecentTags', JSON.stringify( recent ) );
+			window.localStorage.setItem( 'mdmdRecentTags', JSON.stringify( recent ) );
 		} catch ( error ) {
 			// Storage unavailable (private mode); recents are a nicety, not a feature.
 		}
@@ -227,21 +227,21 @@
 	function tagChip( tag, label, isFile ) {
 		const wrapper = document.createElement( 'span' );
 
-		wrapper.className = 'mwright-tag' + ( isFile ? ' mwright-tag--file' : '' );
+		wrapper.className = 'mdmd-tag' + ( isFile ? ' mdmd-tag--file' : '' );
 		wrapper.dataset.search = ( label + ' ' + tag ).toLowerCase();
 
 		const insert = document.createElement( 'button' );
 		insert.type = 'button';
-		insert.className = 'mwright-tag__insert';
+		insert.className = 'mdmd-tag__insert';
 		insert.title = '[' + tag + ']';
 		insert.dataset.insert = tag;
 
 		const labelNode = document.createElement( 'span' );
-		labelNode.className = 'mwright-tag__label';
+		labelNode.className = 'mdmd-tag__label';
 		labelNode.textContent = label;
 
 		const code = document.createElement( 'code' );
-		code.className = 'mwright-tag__code';
+		code.className = 'mdmd-tag__code';
 		code.textContent = '[' + tag + ']';
 
 		insert.appendChild( labelNode );
@@ -249,7 +249,7 @@
 
 		const copy = document.createElement( 'button' );
 		copy.type = 'button';
-		copy.className = 'mwright-tag__copy';
+		copy.className = 'mdmd-tag__copy';
 		copy.dataset.copy = tag;
 		copy.setAttribute( 'aria-label', '[' + tag + ']' );
 		copy.innerHTML = '<span class="dashicons dashicons-admin-page" aria-hidden="true"></span>';
@@ -286,7 +286,7 @@
 		tagSearch.addEventListener( 'input', () => {
 			const term = tagSearch.value.trim().toLowerCase();
 
-			root.querySelectorAll( '.mwright-tags .mwright-tag' ).forEach( ( chip ) => {
+			root.querySelectorAll( '.mdmd-tags .mdmd-tag' ).forEach( ( chip ) => {
 				chip.hidden = term !== '' && ! ( chip.dataset.search || '' ).includes( term );
 			} );
 		} );
@@ -348,7 +348,7 @@
 
 		if ( ! tags.length ) {
 			const empty = document.createElement( 'p' );
-			empty.className = 'mwright-muted';
+			empty.className = 'mdmd-muted';
 			empty.textContent = i18n.noTags;
 			formTagList.appendChild( empty );
 			return;
@@ -412,17 +412,17 @@
 	 */
 	function unknownRow( tag ) {
 		const row = document.createElement( 'span' );
-		row.className = 'mwright-tag mwright-tag--unknown';
+		row.className = 'mdmd-tag mdmd-tag--unknown';
 
 		const label = document.createElement( 'span' );
-		label.className = 'mwright-tag__insert';
-		label.innerHTML = '<code class="mwright-tag__code"></code>';
+		label.className = 'mdmd-tag__insert';
+		label.innerHTML = '<code class="mdmd-tag__code"></code>';
 		label.querySelector( 'code' ).textContent = '[' + tag + ']';
 		row.appendChild( label );
 
 		const remove = document.createElement( 'button' );
 		remove.type = 'button';
-		remove.className = 'mwright-btn mwright-btn--small';
+		remove.className = 'mdmd-btn mdmd-btn--small';
 		remove.textContent = i18n.remove;
 		remove.addEventListener( 'click', () => {
 			replaceEverywhere( '[' + tag + ']', '' );
@@ -431,7 +431,7 @@
 
 		const keep = document.createElement( 'button' );
 		keep.type = 'button';
-		keep.className = 'mwright-btn mwright-btn--small';
+		keep.className = 'mdmd-btn mdmd-btn--small';
 		keep.textContent = i18n.keep;
 		keep.addEventListener( 'click', () => {
 			dismissed.push( tag );
@@ -526,7 +526,7 @@
 
 				if ( statusBadge ) {
 					statusBadge.textContent = data.label;
-					statusBadge.className = 'mwright-badge mwright-badge--' +
+					statusBadge.className = 'mdmd-badge mdmd-badge--' +
 						( statusSelect.value === 'publish' ? 'success' : statusSelect.value === 'private' ? 'neutral' : 'warning' );
 				}
 
@@ -558,13 +558,13 @@
 				wrapper.style.display = 'contents';
 
 				const subject = document.createElement( 'div' );
-				subject.className = 'mwright-modal__subject';
+				subject.className = 'mdmd-modal__subject';
 				subject.innerHTML = '<strong></strong> <span></span>';
 				subject.querySelector( 'strong' ).textContent = i18n.subject;
 				subject.querySelector( 'span' ).textContent = data.subject;
 
 				const frame = document.createElement( 'iframe' );
-				frame.className = 'mwright-modal__frame';
+				frame.className = 'mdmd-modal__frame';
 				frame.title = i18n.previewTitle;
 				// Sandboxed with no allow-scripts: a hostile template cannot
 				// touch the admin page.
@@ -592,8 +592,8 @@
 		const wrapper = document.createElement( 'div' );
 
 		const field = document.createElement( 'p' );
-		field.className = 'mwright-field';
-		field.innerHTML = '<label for="mwright-test-to"></label><input type="email" id="mwright-test-to" />';
+		field.className = 'mdmd-field';
+		field.innerHTML = '<label for="mdmd-test-to"></label><input type="email" id="mdmd-test-to" />';
 		field.querySelector( 'label' ).textContent = i18n.testPrompt;
 
 		wrapper.appendChild( field );
@@ -605,9 +605,9 @@
 				{ label: i18n.cancel, onClick: ( dialog ) => dialog.close() },
 				{
 					label: i18n.sendTest,
-					className: 'mwright-btn--primary',
+					className: 'mdmd-btn--primary',
 					onClick: ( dialog ) => {
-						const recipient = wrapper.querySelector( '#mwright-test-to' ).value;
+						const recipient = wrapper.querySelector( '#mdmd-test-to' ).value;
 
 						dialog.close();
 
@@ -619,7 +619,7 @@
 			],
 		} );
 
-		handle.body.querySelector( '#mwright-test-to' ).focus();
+		handle.body.querySelector( '#mdmd-test-to' ).focus();
 	}
 
 	root.querySelector( '[data-action="save"]' ).addEventListener( 'click', save );
@@ -643,7 +643,7 @@
 	}
 
 	try {
-		renderRecent( JSON.parse( window.localStorage.getItem( 'mwrightRecentTags' ) || '[]' ) );
+		renderRecent( JSON.parse( window.localStorage.getItem( 'mdmdRecentTags' ) || '[]' ) );
 	} catch ( error ) {
 		// No recents yet.
 	}
@@ -652,7 +652,7 @@
 	 * What the visual builder needs from this file. The builder owns the
 	 * blocks; this file stays the only thing that touches CodeMirror.
 	 */
-	window.mwrightBody = {
+	window.mdmdBody = {
 		get: bodyValue,
 		set: setBody,
 		tags: () => availableTags,

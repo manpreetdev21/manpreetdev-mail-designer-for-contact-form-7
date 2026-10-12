@@ -2,87 +2,87 @@
 /**
  * Submissions screen: the log of everything visitors have sent.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-require_once MWRIGHT_DIR . 'admin/class-submissions-list-table.php';
+require_once MDMD_DIR . 'admin/class-submissions-list-table.php';
 
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading which entry to show.
-$mwright_entry_id = isset( $_GET['entry'] ) && ! isset( $_GET['entry_action'] ) ? absint( $_GET['entry'] ) : 0;
+$mdmd_entry_id = isset( $_GET['entry'] ) && ! isset( $_GET['entry_action'] ) ? absint( $_GET['entry'] ) : 0;
 
-$mwright_entry = $mwright_entry_id ? MWRIGHT_Submissions::get( $mwright_entry_id ) : null;
+$mdmd_entry = $mdmd_entry_id ? MDMD_Submissions::get( $mdmd_entry_id ) : null;
 ?>
-<div class="wrap mwright">
+<div class="wrap mdmd">
 
-	<?php if ( $mwright_entry ) : ?>
+	<?php if ( $mdmd_entry ) : ?>
 
 		<?php
-		MWRIGHT_Admin::header(
-			__( 'Submission', 'mailwright-for-contact-form-7' ),
+		MDMD_Admin::header(
+			__( 'Submission', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			sprintf(
-				'<a class="mwright-btn" href="%s">%s</a>',
-				esc_url( MWRIGHT_Plugin::url( 'submissions', array( 'form' => $mwright_entry['form_id'] ) ) ),
-				esc_html__( 'Back to submissions', 'mailwright-for-contact-form-7' )
+				'<a class="mdmd-btn" href="%s">%s</a>',
+				esc_url( MDMD_Plugin::url( 'submissions', array( 'form' => $mdmd_entry['form_id'] ) ) ),
+				esc_html__( 'Back to submissions', 'manpreetdev-mail-designer-for-contact-form-7' )
 			)
 		);
 
-		MWRIGHT_Admin::flash();
+		MDMD_Admin::flash();
 
-		$mwright_stamp = strtotime( $mwright_entry['submitted_at'] );
+		$mdmd_stamp = strtotime( $mdmd_entry['submitted_at'] );
 		?>
 
-		<div class="mwright-card mwright-card--flush">
-			<table class="mwright-entry">
+		<div class="mdmd-card mdmd-card--flush">
+			<table class="mdmd-entry">
 				<tbody>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Form', 'mailwright-for-contact-form-7' ); ?></th>
-						<td><?php echo esc_html( $mwright_entry['form_title'] ? $mwright_entry['form_title'] : sprintf( '#%d', $mwright_entry['form_id'] ) ); ?></td>
+						<th scope="row"><?php esc_html_e( 'Form', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+						<td><?php echo esc_html( $mdmd_entry['form_title'] ? $mdmd_entry['form_title'] : sprintf( '#%d', $mdmd_entry['form_id'] ) ); ?></td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Submitted', 'mailwright-for-contact-form-7' ); ?></th>
-						<td><?php echo esc_html( $mwright_stamp ? wp_date( 'Y-m-d H:i:s', $mwright_stamp ) : $mwright_entry['submitted_at'] ); ?></td>
+						<th scope="row"><?php esc_html_e( 'Submitted', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+						<td><?php echo esc_html( $mdmd_stamp ? wp_date( 'Y-m-d H:i:s', $mdmd_stamp ) : $mdmd_entry['submitted_at'] ); ?></td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Email', 'mailwright-for-contact-form-7' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Email', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
 						<td>
-							<span class="mwright-badge mwright-badge--<?php echo 'sent' === $mwright_entry['status'] ? 'success' : 'danger'; ?>">
+							<span class="mdmd-badge mdmd-badge--<?php echo 'sent' === $mdmd_entry['status'] ? 'success' : 'danger'; ?>">
 								<?php
-								echo 'sent' === $mwright_entry['status']
-									? esc_html__( 'Sent', 'mailwright-for-contact-form-7' )
-									: esc_html__( 'Not sent', 'mailwright-for-contact-form-7' );
+								echo 'sent' === $mdmd_entry['status']
+									? esc_html__( 'Sent', 'manpreetdev-mail-designer-for-contact-form-7' )
+									: esc_html__( 'Not sent', 'manpreetdev-mail-designer-for-contact-form-7' );
 								?>
 							</span>
 						</td>
 					</tr>
-					<?php if ( $mwright_entry['remote_ip'] ) : ?>
+					<?php if ( $mdmd_entry['remote_ip'] ) : ?>
 						<tr>
-							<th scope="row"><?php esc_html_e( 'IP address', 'mailwright-for-contact-form-7' ); ?></th>
-							<td><?php echo esc_html( $mwright_entry['remote_ip'] ); ?></td>
+							<th scope="row"><?php esc_html_e( 'IP address', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+							<td><?php echo esc_html( $mdmd_entry['remote_ip'] ); ?></td>
 						</tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
 		</div>
 
-		<div class="mwright-card mwright-card--flush">
-			<div class="mwright-card__head"><h2><?php esc_html_e( 'Submitted Data', 'mailwright-for-contact-form-7' ); ?></h2></div>
+		<div class="mdmd-card mdmd-card--flush">
+			<div class="mdmd-card__head"><h2><?php esc_html_e( 'Submitted Data', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2></div>
 
-			<?php require MWRIGHT_DIR . 'admin/views/partial-entry-data.php'; ?>
+			<?php require MDMD_DIR . 'admin/views/partial-entry-data.php'; ?>
 		</div>
 
 	<?php else : ?>
 
 		<?php
-		$mwright_table = new MWRIGHT_Submissions_List_Table();
-		$mwright_table->prepare_items();
+		$mdmd_table = new MDMD_Submissions_List_Table();
+		$mdmd_table->prepare_items();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filters, carried into the export link.
-		$mwright_export_args = array_filter(
+		$mdmd_export_args = array_filter(
 			array(
-				'action' => 'mwright_export_entries',
-				'form'   => $mwright_table->current_form(),
+				'action' => 'mdmd_export_entries',
+				'form'   => $mdmd_table->current_form(),
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filter, carried into the export link.
 				'status' => isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '',
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filter, carried into the export link.
@@ -91,41 +91,41 @@ $mwright_entry = $mwright_entry_id ? MWRIGHT_Submissions::get( $mwright_entry_id
 			static fn( $value ) => '' !== $value && 0 !== $value
 		);
 
-		MWRIGHT_Admin::header(
-			__( 'Form Submissions', 'mailwright-for-contact-form-7' ),
-			$mwright_table->has_items()
+		MDMD_Admin::header(
+			__( 'Form Submissions', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			$mdmd_table->has_items()
 				? sprintf(
-					'<a class="mwright-btn" href="%s"><span class="dashicons dashicons-media-spreadsheet"></span>%s</a>',
-					esc_url( wp_nonce_url( add_query_arg( $mwright_export_args, admin_url( 'admin-post.php' ) ), 'mwright_export_entries' ) ),
-					esc_html__( 'Export CSV', 'mailwright-for-contact-form-7' )
+					'<a class="mdmd-btn" href="%s"><span class="dashicons dashicons-media-spreadsheet"></span>%s</a>',
+					esc_url( wp_nonce_url( add_query_arg( $mdmd_export_args, admin_url( 'admin-post.php' ) ), 'mdmd_export_entries' ) ),
+					esc_html__( 'Export CSV', 'manpreetdev-mail-designer-for-contact-form-7' )
 				)
 				: ''
 		);
 
-		MWRIGHT_Admin::flash();
+		MDMD_Admin::flash();
 		?>
 
-		<div class="mwright-card mwright-card--flush mwright-list">
+		<div class="mdmd-card mdmd-card--flush mdmd-list">
 			<form method="get">
-				<input type="hidden" name="page" value="mwright-submissions" />
-				<input type="hidden" name="form" value="<?php echo esc_attr( (string) $mwright_table->current_form() ); ?>" />
+				<input type="hidden" name="page" value="mdmd-submissions" />
+				<input type="hidden" name="form" value="<?php echo esc_attr( (string) $mdmd_table->current_form() ); ?>" />
 				<?php
-				$mwright_table->views();
-				$mwright_table->search_box( __( 'Search submissions', 'mailwright-for-contact-form-7' ), 'mwright-entry-search' );
+				$mdmd_table->views();
+				$mdmd_table->search_box( __( 'Search submissions', 'manpreetdev-mail-designer-for-contact-form-7' ), 'mdmd-entry-search' );
 				?>
 			</form>
 
 			<form method="post">
-				<input type="hidden" name="page" value="mwright-submissions" />
-				<input type="hidden" name="form" value="<?php echo esc_attr( (string) $mwright_table->current_form() ); ?>" />
-				<div class="mwright-list__scroll">
-					<?php $mwright_table->display(); ?>
+				<input type="hidden" name="page" value="mdmd-submissions" />
+				<input type="hidden" name="form" value="<?php echo esc_attr( (string) $mdmd_table->current_form() ); ?>" />
+				<div class="mdmd-list__scroll">
+					<?php $mdmd_table->display(); ?>
 				</div>
 			</form>
 		</div>
 
-		<p class="mwright-muted">
-			<?php esc_html_e( 'Every submission that passes Contact Form 7\'s validation and spam checks is stored here, whether or not the email went out.', 'mailwright-for-contact-form-7' ); ?>
+		<p class="mdmd-muted">
+			<?php esc_html_e( 'Every submission that passes Contact Form 7\'s validation and spam checks is stored here, whether or not the email went out.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 		</p>
 
 	<?php endif; ?>

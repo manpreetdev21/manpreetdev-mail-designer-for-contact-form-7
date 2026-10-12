@@ -2,75 +2,75 @@
 /**
  * Templates list screen.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-require_once MWRIGHT_DIR . 'admin/class-templates-list-table.php';
+require_once MDMD_DIR . 'admin/class-templates-list-table.php';
 
-$mwright_table = new MWRIGHT_Templates_List_Table();
-$mwright_table->prepare_items();
+$mdmd_table = new MDMD_Templates_List_Table();
+$mdmd_table->prepare_items();
 
-$mwright_has_any = MWRIGHT_Template_Post_Type::counts()['total'] > 0;
+$mdmd_has_any = MDMD_Template_Post_Type::counts()['total'] > 0;
 ?>
-<div class="wrap mwright">
+<div class="wrap mdmd">
 
 	<?php
-	MWRIGHT_Admin::header(
-		__( 'Email Templates', 'mailwright-for-contact-form-7' ),
+	MDMD_Admin::header(
+		__( 'Email Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		sprintf(
-			'<a class="mwright-btn mwright-btn--primary" href="%s"><span class="dashicons dashicons-plus-alt2"></span>%s</a>',
-			esc_url( MWRIGHT_Plugin::url( 'template-edit' ) ),
-			esc_html__( 'Add New Template', 'mailwright-for-contact-form-7' )
+			'<a class="mdmd-btn mdmd-btn--primary" href="%s"><span class="dashicons dashicons-plus-alt2"></span>%s</a>',
+			esc_url( MDMD_Plugin::url( 'template-edit' ) ),
+			esc_html__( 'Add New Template', 'manpreetdev-mail-designer-for-contact-form-7' )
 		)
 	);
 
-	MWRIGHT_Admin::flash();
+	MDMD_Admin::flash();
 	?>
 
-	<?php if ( ! $mwright_has_any ) : ?>
+	<?php if ( ! $mdmd_has_any ) : ?>
 
-		<div class="mwright-empty">
+		<div class="mdmd-empty">
 			<span class="dashicons dashicons-email-alt" aria-hidden="true"></span>
-			<h2><?php esc_html_e( 'No templates yet.', 'mailwright-for-contact-form-7' ); ?></h2>
-			<p><?php esc_html_e( 'Create your first reusable Contact Form 7 email template.', 'mailwright-for-contact-form-7' ); ?></p>
-			<a class="mwright-btn mwright-btn--primary" href="<?php echo esc_url( MWRIGHT_Plugin::url( 'template-edit' ) ); ?>">
-				<?php esc_html_e( 'Create Template', 'mailwright-for-contact-form-7' ); ?>
+			<h2><?php esc_html_e( 'No templates yet.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2>
+			<p><?php esc_html_e( 'Create your first reusable Contact Form 7 email template.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></p>
+			<a class="mdmd-btn mdmd-btn--primary" href="<?php echo esc_url( MDMD_Plugin::url( 'template-edit' ) ); ?>">
+				<?php esc_html_e( 'Create Template', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 			</a>
 		</div>
 
 	<?php else : ?>
 
-		<div class="mwright-card mwright-card--flush mwright-list">
+		<div class="mdmd-card mdmd-card--flush mdmd-list">
 			<form method="get">
-				<input type="hidden" name="page" value="mwright-templates" />
+				<input type="hidden" name="page" value="mdmd-templates" />
 				<?php
 				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only filter, preserved across search.
-				$mwright_filter = isset( $_GET['filter'] ) ? sanitize_key( wp_unslash( $_GET['filter'] ) ) : '';
+				$mdmd_filter = isset( $_GET['filter'] ) ? sanitize_key( wp_unslash( $_GET['filter'] ) ) : '';
 
-				if ( $mwright_filter ) {
-					printf( '<input type="hidden" name="filter" value="%s" />', esc_attr( $mwright_filter ) );
+				if ( $mdmd_filter ) {
+					printf( '<input type="hidden" name="filter" value="%s" />', esc_attr( $mdmd_filter ) );
 				}
 
-				$mwright_table->views();
-				$mwright_table->search_box( __( 'Search templates', 'mailwright-for-contact-form-7' ), 'mwright-search' );
+				$mdmd_table->views();
+				$mdmd_table->search_box( __( 'Search templates', 'manpreetdev-mail-designer-for-contact-form-7' ), 'mdmd-search' );
 				?>
 			</form>
 
 			<form method="post">
 				<?php
 				// WP_List_Table::display() emits the bulk-action nonce itself.
-				$mwright_table->display();
+				$mdmd_table->display();
 				?>
 			</form>
 
-			<?php if ( ! $mwright_table->has_items() ) : ?>
-				<div class="mwright-empty mwright-empty--inline">
-					<h2><?php esc_html_e( 'Nothing matches that filter.', 'mailwright-for-contact-form-7' ); ?></h2>
-					<p><?php esc_html_e( 'Try a different search term or clear the filter.', 'mailwright-for-contact-form-7' ); ?></p>
-					<a class="mwright-btn" href="<?php echo esc_url( MWRIGHT_Plugin::url( 'templates' ) ); ?>">
-						<?php esc_html_e( 'Clear filters', 'mailwright-for-contact-form-7' ); ?>
+			<?php if ( ! $mdmd_table->has_items() ) : ?>
+				<div class="mdmd-empty mdmd-empty--inline">
+					<h2><?php esc_html_e( 'Nothing matches that filter.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2>
+					<p><?php esc_html_e( 'Try a different search term or clear the filter.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></p>
+					<a class="mdmd-btn" href="<?php echo esc_url( MDMD_Plugin::url( 'templates' ) ); ?>">
+						<?php esc_html_e( 'Clear filters', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 					</a>
 				</div>
 			<?php endif; ?>

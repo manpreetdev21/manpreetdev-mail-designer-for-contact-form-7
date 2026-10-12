@@ -1,4 +1,4 @@
-# Mailwright for Contact Form 7
+# ManpreetDev Mail Designer for Contact Form 7
 
 Reusable, brandable email templates for Contact Form 7 — design once, assign to any form, and keep every submission.
 
@@ -56,7 +56,7 @@ Contact Form 7 keeps doing what it does best — rendering, validating and submi
 
 1. Install and activate **Contact Form 7**.
 2. Copy this plugin into `wp-content/plugins/` and activate it.
-3. Open **Mailwright** in the admin menu.
+3. Open **Mail Designer** in the admin menu.
 
 The nine starter templates are installed the first time an editor opens the admin with Contact Form 7 active. You can add any that are missing later from **Tools → Demo Templates**.
 
@@ -72,7 +72,7 @@ Templates are injected through the `wpcf7_contact_form_properties` filter when a
 
 ## Uploaded files
 
-Contact Form 7 deletes its copy of an upload as soon as the request ends, so each submission keeps its own copy under `wp-content/uploads/mwright-submissions/`.
+Contact Form 7 deletes its copy of an upload as soon as the request ends, so each submission keeps its own copy under `wp-content/uploads/mdmd-submissions/`.
 
 - Each submission gets an unguessable folder
 - The directory is closed to the web with an `.htaccess` deny rule and an `index.html`
@@ -110,7 +110,7 @@ Templates, submissions and stored files all stay. They are only removed if you t
 ## Changelog
 
 ### 2.0.0
-- Renamed the plugin to **Mailwright for Contact Form 7**. Existing templates, submissions, branding and settings migrate automatically on the first admin page load.
+- Renamed the plugin to **ManpreetDev Mail Designer for Contact Form 7**. Existing templates, submissions, branding and settings migrate automatically on the first admin page load.
 - Added the `Requires Plugins` header, so WordPress 6.5+ checks for Contact Form 7 before activation.
 - The missing-dependency notice now appears only on this plugin's screens and the plugins list.
 

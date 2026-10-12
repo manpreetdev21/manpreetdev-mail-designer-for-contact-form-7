@@ -6,7 +6,7 @@
  * grows a column for each of that form's fields, so one screen shows the whole
  * enquiry rather than a summary.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-class MWRIGHT_Submissions_List_Table extends WP_List_Table {
+class MDMD_Submissions_List_Table extends WP_List_Table {
 
 	/** Field name => label for the selected form. */
 	private $fields = array();
@@ -29,8 +29,8 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'singular' => 'mwright_entry',
-				'plural'   => 'mwright_entries',
+				'singular' => 'mdmd_entry',
+				'plural'   => 'mdmd_entries',
 				'ajax'     => false,
 			)
 		);
@@ -66,20 +66,20 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	public function get_columns() {
 		$columns = array(
 			'cb'           => '<input type="checkbox" />',
-			'submitted_at' => __( 'Submitted', 'mailwright-for-contact-form-7' ),
+			'submitted_at' => __( 'Submitted', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 
 		if ( ! $this->current_form() ) {
-			$columns['form_title'] = __( 'Form', 'mailwright-for-contact-form-7' );
+			$columns['form_title'] = __( 'Form', 'manpreetdev-mail-designer-for-contact-form-7' );
 		}
 
-		$columns['status'] = __( 'Email', 'mailwright-for-contact-form-7' );
+		$columns['status'] = __( 'Email', 'manpreetdev-mail-designer-for-contact-form-7' );
 
 		foreach ( $this->fields as $name => $label ) {
 			$columns[ 'field-' . $name ] = $label;
 		}
 
-		$columns['details'] = __( 'Submitted Data', 'mailwright-for-contact-form-7' );
+		$columns['details'] = __( 'Submitted Data', 'manpreetdev-mail-designer-for-contact-form-7' );
 
 		return $columns;
 	}
@@ -103,7 +103,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions() {
-		return array( 'delete' => __( 'Delete', 'mailwright-for-contact-form-7' ) );
+		return array( 'delete' => __( 'Delete', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 	}
 
 	/**
@@ -117,17 +117,17 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		$views = array(
 			'all' => sprintf(
 				'<a href="%s"%s>%s <span class="count">(%d)</span></a>',
-				esc_url( MWRIGHT_Plugin::url( 'submissions' ) ),
+				esc_url( MDMD_Plugin::url( 'submissions' ) ),
 				$current ? '' : ' class="current" aria-current="page"',
-				esc_html__( 'All Forms', 'mailwright-for-contact-form-7' ),
-				MWRIGHT_Submissions::count()
+				esc_html__( 'All Forms', 'manpreetdev-mail-designer-for-contact-form-7' ),
+				MDMD_Submissions::count()
 			),
 		);
 
 		foreach ( $this->forms as $form_id => $form ) {
 			$views[ 'form-' . $form_id ] = sprintf(
 				'<a href="%s"%s>%s <span class="count">(%d)</span></a>',
-				esc_url( MWRIGHT_Plugin::url( 'submissions', array( 'form' => $form_id ) ) ),
+				esc_url( MDMD_Plugin::url( 'submissions', array( 'form' => $form_id ) ) ),
 				$current === $form_id ? ' class="current" aria-current="page"' : '',
 				esc_html( $form['title'] ? $form['title'] : sprintf( '#%d', $form_id ) ),
 				$form['count']
@@ -149,15 +149,15 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 
 		$status  = $this->current_status();
 		$options = array(
-			''       => __( 'Any email result', 'mailwright-for-contact-form-7' ),
-			'sent'   => __( 'Email sent', 'mailwright-for-contact-form-7' ),
-			'failed' => __( 'Email failed', 'mailwright-for-contact-form-7' ),
+			''       => __( 'Any email result', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'sent'   => __( 'Email sent', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'failed' => __( 'Email failed', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 
 		echo '<div class="alignleft actions">';
-		echo '<label class="screen-reader-text" for="mwright-status">' .
-			esc_html__( 'Filter by email result', 'mailwright-for-contact-form-7' ) . '</label>';
-		echo '<select name="status" id="mwright-status">';
+		echo '<label class="screen-reader-text" for="mdmd-status">' .
+			esc_html__( 'Filter by email result', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</label>';
+		echo '<select name="status" id="mdmd-status">';
 
 		foreach ( $options as $value => $label ) {
 			printf(
@@ -169,7 +169,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		}
 
 		echo '</select>';
-		submit_button( __( 'Filter', 'mailwright-for-contact-form-7' ), '', 'filter_action', false );
+		submit_button( __( 'Filter', 'manpreetdev-mail-designer-for-contact-form-7' ), '', 'filter_action', false );
 		echo '</div>';
 	}
 
@@ -179,9 +179,9 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		$this->process_bulk_action();
 
-		$this->forms = MWRIGHT_Submissions::forms();
+		$this->forms = MDMD_Submissions::forms();
 
-		$per_page = $this->get_items_per_page( 'mwright_entries_per_page', 20 );
+		$per_page = $this->get_items_per_page( 'mdmd_entries_per_page', 20 );
 		$form_id  = $this->current_form();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only search.
@@ -191,7 +191,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only ordering.
 		$order = isset( $_REQUEST['order'] ) ? sanitize_key( wp_unslash( $_REQUEST['order'] ) ) : 'desc';
 
-		$results = MWRIGHT_Submissions::query(
+		$results = MDMD_Submissions::query(
 			array(
 				'form_id'  => $form_id,
 				'status'   => $this->current_status(),
@@ -206,7 +206,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		$this->items = $results['items'];
 
 		// Field columns only make sense when every row is the same form.
-		$this->fields = $form_id ? MWRIGHT_Submissions::field_columns( $form_id, $this->items ) : array();
+		$this->fields = $form_id ? MDMD_Submissions::field_columns( $form_id, $this->items ) : array();
 
 		$this->set_pagination_args(
 			array(
@@ -228,10 +228,10 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		}
 
 		check_admin_referer( 'bulk-' . $this->_args['plural'] );
-		MWRIGHT_Plugin::require_cap();
+		MDMD_Plugin::require_cap();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- checked immediately above.
-		MWRIGHT_Submissions::delete( array_map( 'absint', (array) wp_unslash( $_REQUEST['entry'] ?? array() ) ) );
+		MDMD_Submissions::delete( array_map( 'absint', (array) wp_unslash( $_REQUEST['entry'] ?? array() ) ) );
 	}
 
 	/**
@@ -253,20 +253,20 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	public function column_submitted_at( $item ) {
 		$stamp = strtotime( $item['submitted_at'] );
 
-		$view = MWRIGHT_Plugin::url( 'submissions', array( 'entry' => $item['id'] ) );
+		$view = MDMD_Plugin::url( 'submissions', array( 'entry' => $item['id'] ) );
 
 		$delete = wp_nonce_url(
-			MWRIGHT_Plugin::url( 'submissions', array( 'entry_action' => 'delete', 'entry' => $item['id'] ) ),
-			'mwright_delete_entry_' . $item['id']
+			MDMD_Plugin::url( 'submissions', array( 'entry_action' => 'delete', 'entry' => $item['id'] ) ),
+			'mdmd_delete_entry_' . $item['id']
 		);
 
 		$actions = array(
-			'view'   => sprintf( '<a href="%s">%s</a>', esc_url( $view ), esc_html__( 'View', 'mailwright-for-contact-form-7' ) ),
+			'view'   => sprintf( '<a href="%s">%s</a>', esc_url( $view ), esc_html__( 'View', 'manpreetdev-mail-designer-for-contact-form-7' ) ),
 			'delete' => sprintf(
-				'<a href="%s" class="mwright-danger-link" data-mwright-confirm="%s">%s</a>',
+				'<a href="%s" class="mdmd-danger-link" data-mdmd-confirm="%s">%s</a>',
 				esc_url( $delete ),
-				esc_attr__( 'Delete this submission? This cannot be undone.', 'mailwright-for-contact-form-7' ),
-				esc_html__( 'Delete', 'mailwright-for-contact-form-7' )
+				esc_attr__( 'Delete this submission? This cannot be undone.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+				esc_html__( 'Delete', 'manpreetdev-mail-designer-for-contact-form-7' )
 			),
 		);
 
@@ -289,7 +289,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 
 		return sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( MWRIGHT_Plugin::url( 'submissions', array( 'form' => $item['form_id'] ) ) ),
+			esc_url( MDMD_Plugin::url( 'submissions', array( 'form' => $item['form_id'] ) ) ),
 			esc_html( $title )
 		);
 	}
@@ -304,11 +304,11 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		$sent = 'sent' === $item['status'];
 
 		return sprintf(
-			'<span class="mwright-badge mwright-badge--%s">%s</span>',
+			'<span class="mdmd-badge mdmd-badge--%s">%s</span>',
 			$sent ? 'success' : 'danger',
 			$sent
-				? esc_html__( 'Sent', 'mailwright-for-contact-form-7' )
-				: esc_html__( 'Not sent', 'mailwright-for-contact-form-7' )
+				? esc_html__( 'Sent', 'manpreetdev-mail-designer-for-contact-form-7' )
+				: esc_html__( 'Not sent', 'manpreetdev-mail-designer-for-contact-form-7' )
 		);
 	}
 
@@ -322,9 +322,9 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	public function column_default( $item, $column ) {
 		if ( 'details' === $column ) {
 			return sprintf(
-				'<button type="button" class="mwright-btn mwright-btn--small" data-mwright-entry-toggle aria-expanded="false" aria-controls="mwright-entry-%1$d"><span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>%2$s</button>',
+				'<button type="button" class="mdmd-btn mdmd-btn--small" data-mdmd-entry-toggle aria-expanded="false" aria-controls="mdmd-entry-%1$d"><span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>%2$s</button>',
 				$item['id'],
-				esc_html__( 'Details', 'mailwright-for-contact-form-7' )
+				esc_html__( 'Details', 'manpreetdev-mail-designer-for-contact-form-7' )
 			);
 		}
 
@@ -334,20 +334,20 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 
 		$name = substr( $column, 6 );
 
-		$files = MWRIGHT_Submissions::files( $item );
+		$files = MDMD_Submissions::files( $item );
 
 		if ( isset( $files[ $name ] ) ) {
 			return self::file_links( $item['id'], $name, $files[ $name ] );
 		}
 
 		if ( ! isset( $item['fields'][ $name ] ) ) {
-			return '<span class="mwright-muted">&mdash;</span>';
+			return '<span class="mdmd-muted">&mdash;</span>';
 		}
 
-		$value = MWRIGHT_Submissions::flatten( $item['fields'][ $name ] );
+		$value = MDMD_Submissions::flatten( $item['fields'][ $name ] );
 
 		return '' === trim( $value )
-			? '<span class="mwright-muted">&mdash;</span>'
+			? '<span class="mdmd-muted">&mdash;</span>'
 			: esc_html( self::shorten( $value ) );
 	}
 
@@ -365,8 +365,8 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		foreach ( $files as $file ) {
 			if ( '' === $file['path'] ) {
 				$links[] = sprintf(
-					'<span class="mwright-muted" title="%s">%s</span>',
-					esc_attr__( 'This file type is not stored.', 'mailwright-for-contact-form-7' ),
+					'<span class="mdmd-muted" title="%s">%s</span>',
+					esc_attr__( 'This file type is not stored.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 					esc_html( $file['name'] )
 				);
 				continue;
@@ -374,7 +374,7 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 
 			$links[] = sprintf(
 				'<a href="%s"><span class="dashicons dashicons-paperclip" aria-hidden="true"></span>%s</a>',
-				esc_url( MWRIGHT_Submissions::download_url( $entry_id, $field, $file['index'] ) ),
+				esc_url( MDMD_Submissions::download_url( $entry_id, $field, $file['index'] ) ),
 				esc_html( $file['name'] )
 			);
 		}
@@ -394,13 +394,13 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 		echo '</tr>';
 
 		printf(
-			'<tr class="mwright-entry__row" id="mwright-entry-%1$d" hidden><td colspan="%2$d">',
+			'<tr class="mdmd-entry__row" id="mdmd-entry-%1$d" hidden><td colspan="%2$d">',
 			(int) $item['id'],
 			(int) $this->get_column_count()
 		);
 
-		$mwright_entry = $item;
-		require MWRIGHT_DIR . 'admin/views/partial-entry-data.php';
+		$mdmd_entry = $item;
+		require MDMD_DIR . 'admin/views/partial-entry-data.php';
 
 		echo '</td></tr>';
 	}
@@ -421,6 +421,6 @@ class MWRIGHT_Submissions_List_Table extends WP_List_Table {
 	 * Message shown when nothing matches.
 	 */
 	public function no_items() {
-		esc_html_e( 'No submissions yet.', 'mailwright-for-contact-form-7' );
+		esc_html_e( 'No submissions yet.', 'manpreetdev-mail-designer-for-contact-form-7' );
 	}
 }

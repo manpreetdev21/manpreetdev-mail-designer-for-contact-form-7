@@ -6,18 +6,18 @@
  * present or future — is recorded without a schema change. Contact Form 7
  * still owns validation, spam checks and sending; we only listen.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_Submissions {
+class MDMD_Submissions {
 
 	/** Table name, without the site prefix. */
-	const TABLE = 'mwright_submissions';
+	const TABLE = 'mdmd_submissions';
 
 	/** Option holding the installed schema version. */
-	const DB_OPTION = 'mwright_db_version';
+	const DB_OPTION = 'mdmd_db_version';
 
 	/** Bump to make dbDelta run again. */
 	const DB_VERSION = '1';
@@ -236,7 +236,7 @@ class MWRIGHT_Submissions {
 	public static function upload_dir() {
 		$uploads = wp_upload_dir();
 
-		return untrailingslashit( $uploads['basedir'] ) . '/mwright-submissions';
+		return untrailingslashit( $uploads['basedir'] ) . '/mdmd-submissions';
 	}
 
 	/**
@@ -350,14 +350,14 @@ class MWRIGHT_Submissions {
 		return wp_nonce_url(
 			add_query_arg(
 				array(
-					'action' => 'mwright_download',
+					'action' => 'mdmd_download',
 					'entry'  => (int) $entry_id,
 					'field'  => rawurlencode( $field ),
 					'index'  => (int) $index,
 				),
 				admin_url( 'admin-post.php' )
 			),
-			'mwright_download_' . (int) $entry_id
+			'mdmd_download_' . (int) $entry_id
 		);
 	}
 
@@ -604,14 +604,14 @@ class MWRIGHT_Submissions {
 	public static function field_columns( $form_id, $items ) {
 		$columns = array();
 
-		foreach ( MWRIGHT_CF7_Bridge::form_tags( $form_id ) as $tag ) {
+		foreach ( MDMD_CF7_Bridge::form_tags( $form_id ) as $tag ) {
 			$columns[ $tag['name'] ] = $tag['label'];
 		}
 
 		foreach ( $items as $item ) {
 			foreach ( array_keys( $item['fields'] ) as $name ) {
 				if ( ! isset( $columns[ $name ] ) ) {
-					$columns[ $name ] = MWRIGHT_CF7_Bridge::friendly_label( $name );
+					$columns[ $name ] = MDMD_CF7_Bridge::friendly_label( $name );
 				}
 			}
 		}
