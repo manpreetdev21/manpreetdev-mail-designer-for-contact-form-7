@@ -1,18 +1,18 @@
 <?php
 /**
- * Global branding: one option, plus the [mwright_*] tags templates can use.
+ * Global branding: one option, plus the [mdmd_*] tags templates can use.
  *
  * These tags are resolved by us before Contact Form 7 ever sees the body,
  * so CF7 only has to deal with its own mail-tags.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_Branding {
+class MDMD_Branding {
 
-	const OPTION = 'mwright_branding';
+	const OPTION = 'mdmd_branding';
 
 	/**
 	 * Branding defaults, seeded from the site itself so a fresh install
@@ -29,7 +29,7 @@ class MWRIGHT_Branding {
 			'secondary_color'  => '#1d2327',
 			'footer_text'      => sprintf(
 				/* translators: %s: site name */
-				__( 'You are receiving this email because you contacted %s.', 'mailwright-for-contact-form-7' ),
+				__( 'You are receiving this email because you contacted %s.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 				get_bloginfo( 'name' )
 			),
 			'address'          => '',
@@ -93,20 +93,20 @@ class MWRIGHT_Branding {
 	 */
 	public static function tags() {
 		return array(
-			'mwright_company_name'    => __( 'Company Name', 'mailwright-for-contact-form-7' ),
-			'mwright_logo'            => __( 'Logo', 'mailwright-for-contact-form-7' ),
-			'mwright_website'         => __( 'Website URL', 'mailwright-for-contact-form-7' ),
-			'mwright_address'         => __( 'Company Address', 'mailwright-for-contact-form-7' ),
-			'mwright_footer_text'     => __( 'Footer Text', 'mailwright-for-contact-form-7' ),
-			'mwright_primary_color'   => __( 'Primary Colour', 'mailwright-for-contact-form-7' ),
-			'mwright_secondary_color' => __( 'Secondary Colour', 'mailwright-for-contact-form-7' ),
-			'mwright_social_links'    => __( 'Social Links', 'mailwright-for-contact-form-7' ),
-			'mwright_year'            => __( 'Current Year', 'mailwright-for-contact-form-7' ),
+			'mdmd_company_name'    => __( 'Company Name', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_logo'            => __( 'Logo', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_website'         => __( 'Website URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_address'         => __( 'Company Address', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_footer_text'     => __( 'Footer Text', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_primary_color'   => __( 'Primary Colour', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_secondary_color' => __( 'Secondary Colour', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_social_links'    => __( 'Social Links', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'mdmd_year'            => __( 'Current Year', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 	}
 
 	/**
-	 * Replaces every [mwright_*] tag in a string.
+	 * Replaces every [mdmd_*] tag in a string.
 	 *
 	 * @param string $text Template text.
 	 * @param bool   $html Whether the output is HTML.
@@ -132,15 +132,15 @@ class MWRIGHT_Branding {
 		}
 
 		$map = array(
-			'[mwright_company_name]'    => $html ? esc_html( $b['company_name'] ) : $b['company_name'],
-			'[mwright_logo]'            => $logo,
-			'[mwright_website]'         => esc_url( $b['website'] ),
-			'[mwright_address]'         => $html ? nl2br( esc_html( $b['address'] ) ) : $b['address'],
-			'[mwright_footer_text]'     => $html ? esc_html( $b['footer_text'] ) : $b['footer_text'],
-			'[mwright_primary_color]'   => $b['primary_color'],
-			'[mwright_secondary_color]' => $b['secondary_color'],
-			'[mwright_social_links]'    => self::social_links( $b, $html ),
-			'[mwright_year]'            => wp_date( 'Y' ),
+			'[mdmd_company_name]'    => $html ? esc_html( $b['company_name'] ) : $b['company_name'],
+			'[mdmd_logo]'            => $logo,
+			'[mdmd_website]'         => esc_url( $b['website'] ),
+			'[mdmd_address]'         => $html ? nl2br( esc_html( $b['address'] ) ) : $b['address'],
+			'[mdmd_footer_text]'     => $html ? esc_html( $b['footer_text'] ) : $b['footer_text'],
+			'[mdmd_primary_color]'   => $b['primary_color'],
+			'[mdmd_secondary_color]' => $b['secondary_color'],
+			'[mdmd_social_links]'    => self::social_links( $b, $html ),
+			'[mdmd_year]'            => wp_date( 'Y' ),
 		);
 
 		$out = str_replace( array_keys( $map ), array_values( $map ), $text );
@@ -215,10 +215,10 @@ class MWRIGHT_Branding {
 	 */
 	private static function social_links( $b, $html ) {
 		$networks = array(
-			'social_facebook'  => __( 'Facebook', 'mailwright-for-contact-form-7' ),
-			'social_twitter'   => __( 'X', 'mailwright-for-contact-form-7' ),
-			'social_linkedin'  => __( 'LinkedIn', 'mailwright-for-contact-form-7' ),
-			'social_instagram' => __( 'Instagram', 'mailwright-for-contact-form-7' ),
+			'social_facebook'  => __( 'Facebook', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'social_twitter'   => __( 'X', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'social_linkedin'  => __( 'LinkedIn', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'social_instagram' => __( 'Instagram', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 
 		$parts = array();

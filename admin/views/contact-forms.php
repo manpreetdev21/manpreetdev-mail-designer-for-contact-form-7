@@ -5,113 +5,113 @@
  * Read-only. Everything here is detected from Contact Form 7's own API, so a
  * form that gains a field shows the change without anything being saved.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$mwright_forms       = MWRIGHT_CF7_Bridge::forms();
-$mwright_assignments = MWRIGHT_CF7_Bridge::assignments();
+$mdmd_forms       = MDMD_CF7_Bridge::forms();
+$mdmd_assignments = MDMD_CF7_Bridge::assignments();
 
-$mwright_slots = array(
-	'admin'    => __( 'Admin Email', 'mailwright-for-contact-form-7' ),
-	'customer' => __( 'Customer Email', 'mailwright-for-contact-form-7' ),
+$mdmd_slots = array(
+	'admin'    => __( 'Admin Email', 'manpreetdev-mail-designer-for-contact-form-7' ),
+	'customer' => __( 'Customer Email', 'manpreetdev-mail-designer-for-contact-form-7' ),
 );
 ?>
-<div class="wrap mwright">
+<div class="wrap mdmd">
 
 	<?php
-	MWRIGHT_Admin::header( __( 'Contact Forms', 'mailwright-for-contact-form-7' ) );
-	MWRIGHT_Admin::flash();
+	MDMD_Admin::header( __( 'Contact Forms', 'manpreetdev-mail-designer-for-contact-form-7' ) );
+	MDMD_Admin::flash();
 	?>
 
-	<?php if ( ! $mwright_forms ) : ?>
+	<?php if ( ! $mdmd_forms ) : ?>
 
-		<div class="mwright-empty">
+		<div class="mdmd-empty">
 			<span class="dashicons dashicons-feedback" aria-hidden="true"></span>
-			<h2><?php esc_html_e( 'No contact forms found.', 'mailwright-for-contact-form-7' ); ?></h2>
-			<p><?php esc_html_e( 'Create a form in Contact Form 7 and its fields will be detected here automatically.', 'mailwright-for-contact-form-7' ); ?></p>
-			<a class="mwright-btn mwright-btn--primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wpcf7-new' ) ); ?>">
-				<?php esc_html_e( 'Create a contact form', 'mailwright-for-contact-form-7' ); ?>
+			<h2><?php esc_html_e( 'No contact forms found.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></h2>
+			<p><?php esc_html_e( 'Create a form in Contact Form 7 and its fields will be detected here automatically.', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></p>
+			<a class="mdmd-btn mdmd-btn--primary" href="<?php echo esc_url( admin_url( 'admin.php?page=wpcf7-new' ) ); ?>">
+				<?php esc_html_e( 'Create a contact form', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 			</a>
 		</div>
 
 	<?php else : ?>
 
-		<div class="mwright-card mwright-card--flush">
-			<table class="mwright-table">
+		<div class="mdmd-card mdmd-card--flush">
+			<table class="mdmd-table">
 				<thead>
 					<tr>
-						<th scope="col"><?php esc_html_e( 'Contact Form', 'mailwright-for-contact-form-7' ); ?></th>
-						<th scope="col"><?php esc_html_e( 'Fields', 'mailwright-for-contact-form-7' ); ?></th>
-						<th scope="col"><?php esc_html_e( 'File Uploads', 'mailwright-for-contact-form-7' ); ?></th>
-						<?php foreach ( $mwright_slots as $mwright_label ) : ?>
-							<th scope="col"><?php echo esc_html( $mwright_label ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Contact Form', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Fields', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'File Uploads', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></th>
+						<?php foreach ( $mdmd_slots as $mdmd_label ) : ?>
+							<th scope="col"><?php echo esc_html( $mdmd_label ); ?></th>
 						<?php endforeach; ?>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					foreach ( $mwright_forms as $mwright_form_id => $title ) :
-						$mwright_tags    = MWRIGHT_CF7_Bridge::form_tags( $mwright_form_id );
-						$mwright_files   = MWRIGHT_CF7_Bridge::file_fields( $mwright_form_id );
-						$mwright_current = $mwright_assignments[ $mwright_form_id ] ?? array();
+					foreach ( $mdmd_forms as $mdmd_form_id => $title ) :
+						$mdmd_tags    = MDMD_CF7_Bridge::form_tags( $mdmd_form_id );
+						$mdmd_files   = MDMD_CF7_Bridge::file_fields( $mdmd_form_id );
+						$mdmd_current = $mdmd_assignments[ $mdmd_form_id ] ?? array();
 						?>
 						<tr>
-							<td data-label="<?php esc_attr_e( 'Contact Form', 'mailwright-for-contact-form-7' ); ?>">
+							<td data-label="<?php esc_attr_e( 'Contact Form', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
 								<strong><?php echo esc_html( $title ); ?></strong>
-								<?php if ( $mwright_current ) : ?>
-									<span class="mwright-badge mwright-badge--success"><?php esc_html_e( 'Managed', 'mailwright-for-contact-form-7' ); ?></span>
+								<?php if ( $mdmd_current ) : ?>
+									<span class="mdmd-badge mdmd-badge--success"><?php esc_html_e( 'Managed', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></span>
 								<?php endif; ?>
-								<div class="mwright-muted">
-									<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpcf7&post=' . $mwright_form_id . '&action=edit' ) ); ?>">
-										<?php esc_html_e( 'Edit in Contact Form 7', 'mailwright-for-contact-form-7' ); ?>
+								<div class="mdmd-muted">
+									<a href="<?php echo esc_url( admin_url( 'admin.php?page=wpcf7&post=' . $mdmd_form_id . '&action=edit' ) ); ?>">
+										<?php esc_html_e( 'Edit in Contact Form 7', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 									</a>
 								</div>
 							</td>
 
-							<td data-label="<?php esc_attr_e( 'Fields', 'mailwright-for-contact-form-7' ); ?>">
-								<?php if ( $mwright_tags ) : ?>
-									<div class="mwright-muted">
+							<td data-label="<?php esc_attr_e( 'Fields', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
+								<?php if ( $mdmd_tags ) : ?>
+									<div class="mdmd-muted">
 										<?php
 										$names = array();
 
-										foreach ( $mwright_tags as $tag ) {
+										foreach ( $mdmd_tags as $tag ) {
 											if ( empty( $tag['is_file'] ) ) {
 												$names[] = '[' . $tag['name'] . ']';
 											}
 										}
 
-										echo esc_html( $names ? implode( ', ', $names ) : __( 'None', 'mailwright-for-contact-form-7' ) );
+										echo esc_html( $names ? implode( ', ', $names ) : __( 'None', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 										?>
 									</div>
 								<?php else : ?>
-									<span class="mwright-muted"><?php esc_html_e( 'None', 'mailwright-for-contact-form-7' ); ?></span>
+									<span class="mdmd-muted"><?php esc_html_e( 'None', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></span>
 								<?php endif; ?>
 							</td>
 
-							<td data-label="<?php esc_attr_e( 'File Uploads', 'mailwright-for-contact-form-7' ); ?>">
-								<?php if ( $mwright_files ) : ?>
-									<?php foreach ( $mwright_files as $mwright_name ) : ?>
-										<span class="mwright-badge mwright-badge--info"><?php echo esc_html( '[' . $mwright_name . ']' ); ?></span>
+							<td data-label="<?php esc_attr_e( 'File Uploads', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>">
+								<?php if ( $mdmd_files ) : ?>
+									<?php foreach ( $mdmd_files as $mdmd_name ) : ?>
+										<span class="mdmd-badge mdmd-badge--info"><?php echo esc_html( '[' . $mdmd_name . ']' ); ?></span>
 									<?php endforeach; ?>
 								<?php else : ?>
-									<span class="mwright-muted"><?php esc_html_e( 'None', 'mailwright-for-contact-form-7' ); ?></span>
+									<span class="mdmd-muted"><?php esc_html_e( 'None', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></span>
 								<?php endif; ?>
 							</td>
 
 							<?php
-							foreach ( $mwright_slots as $mwright_slot => $mwright_label ) :
-								$mwright_assigned = (int) ( $mwright_current[ $mwright_slot ] ?? 0 );
-								$mwright_template = $mwright_assigned ? MWRIGHT_Template_Post_Type::get( $mwright_assigned ) : null;
+							foreach ( $mdmd_slots as $mdmd_slot => $mdmd_label ) :
+								$mdmd_assigned = (int) ( $mdmd_current[ $mdmd_slot ] ?? 0 );
+								$mdmd_template = $mdmd_assigned ? MDMD_Template_Post_Type::get( $mdmd_assigned ) : null;
 								?>
-								<td data-label="<?php echo esc_attr( $mwright_label ); ?>">
-									<?php if ( $mwright_template ) : ?>
-										<a href="<?php echo esc_url( MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $mwright_assigned ) ) ); ?>">
-											<?php echo esc_html( $mwright_template['name'] ); ?>
+								<td data-label="<?php echo esc_attr( $mdmd_label ); ?>">
+									<?php if ( $mdmd_template ) : ?>
+										<a href="<?php echo esc_url( MDMD_Plugin::url( 'template-edit', array( 'template' => $mdmd_assigned ) ) ); ?>">
+											<?php echo esc_html( $mdmd_template['name'] ); ?>
 										</a>
 									<?php else : ?>
-										<span class="mwright-muted"><?php esc_html_e( 'Contact Form 7 default', 'mailwright-for-contact-form-7' ); ?></span>
+										<span class="mdmd-muted"><?php esc_html_e( 'Contact Form 7 default', 'manpreetdev-mail-designer-for-contact-form-7' ); ?></span>
 									<?php endif; ?>
 								</td>
 							<?php endforeach; ?>
@@ -121,9 +121,9 @@ $mwright_slots = array(
 			</table>
 		</div>
 
-		<p class="mwright-help">
-			<a class="mwright-btn" href="<?php echo esc_url( MWRIGHT_Plugin::url( 'assignments' ) ); ?>">
-				<?php esc_html_e( 'Manage assignments', 'mailwright-for-contact-form-7' ); ?>
+		<p class="mdmd-help">
+			<a class="mdmd-btn" href="<?php echo esc_url( MDMD_Plugin::url( 'assignments' ) ); ?>">
+				<?php esc_html_e( 'Manage assignments', 'manpreetdev-mail-designer-for-contact-form-7' ); ?>
 			</a>
 		</p>
 

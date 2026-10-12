@@ -2,12 +2,12 @@
 /**
  * Every AJAX endpoint, behind one nonce and one capability check.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_Ajax {
+class MDMD_Ajax {
 
 	/** Action name => handler method. */
 	const ACTIONS = array(
@@ -26,7 +26,7 @@ class MWRIGHT_Ajax {
 	 */
 	public static function init() {
 		foreach ( array_keys( self::ACTIONS ) as $action ) {
-			add_action( 'wp_ajax_mwright_' . $action, array( __CLASS__, 'dispatch' ) );
+			add_action( 'wp_ajax_mdmd_' . $action, array( __CLASS__, 'dispatch' ) );
 		}
 	}
 
@@ -34,21 +34,21 @@ class MWRIGHT_Ajax {
 	 * Validates the request, then hands off to the right handler.
 	 */
 	public static function dispatch() {
-		check_ajax_referer( 'mwright_admin', 'nonce' );
+		check_ajax_referer( 'mdmd_admin', 'nonce' );
 
 		// A valid nonce proves intent, not permission. Check both.
-		if ( ! current_user_can( MWRIGHT_Plugin::cap() ) ) {
+		if ( ! current_user_can( MDMD_Plugin::cap() ) ) {
 			wp_send_json_error(
-				array( 'message' => __( 'You do not have permission to do that.', 'mailwright-for-contact-form-7' ) ),
+				array( 'message' => __( 'You do not have permission to do that.', 'manpreetdev-mail-designer-for-contact-form-7' ) ),
 				403
 			);
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified above.
-		$action = str_replace( 'mwright_', '', sanitize_key( wp_unslash( $_REQUEST['action'] ?? '' ) ) );
+		$action = str_replace( 'mdmd_', '', sanitize_key( wp_unslash( $_REQUEST['action'] ?? '' ) ) );
 
 		if ( ! isset( self::ACTIONS[ $action ] ) ) {
-			wp_send_json_error( array( 'message' => __( 'Unknown request.', 'mailwright-for-contact-form-7' ) ), 400 );
+			wp_send_json_error( array( 'message' => __( 'Unknown request.', 'manpreetdev-mail-designer-for-contact-form-7' ) ), 400 );
 		}
 
 		call_user_func( array( __CLASS__, self::ACTIONS[ $action ] ) );
@@ -57,7 +57,7 @@ class MWRIGHT_Ajax {
 	/**
 	 * Collects the template fields from the request.
 	 *
-	 * Sanitizing happens in MWRIGHT_Template_Post_Type::save() so that the
+	 * Sanitizing happens in MDMD_Template_Post_Type::save() so that the
 	 * editor, the importer and the starter templates all go through the
 	 * same funnel.
 	 *
@@ -113,21 +113,21 @@ class MWRIGHT_Ajax {
 	/** Creates or updates a template. */
 	public static function save_template() {
 		$input = self::posted_template();
-		$id    = MWRIGHT_Template_Post_Type::save( $input );
+		$id    = MDMD_Template_Post_Type::save( $input );
 
 		if ( is_wp_error( $id ) ) {
 			wp_send_json_error( array( 'message' => $id->get_error_message() ) );
 		}
 
-		$saved = MWRIGHT_Template_Post_Type::get( $id );
+		$saved = MDMD_Template_Post_Type::get( $id );
 
 		wp_send_json_success(
 			array(
 				'id'       => $id,
-				'message'  => __( 'Template saved.', 'mailwright-for-contact-form-7' ),
+				'message'  => __( 'Template saved.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 				'status'   => $saved['status'],
-				'label'    => MWRIGHT_Template_Post_Type::status_label( $saved['status'] ),
-				'editUrl'  => MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $id ) ),
+				'label'    => MDMD_Template_Post_Type::status_label( $saved['status'] ),
+				'editUrl'  => MDMD_Plugin::url( 'template-edit', array( 'template' => $id ) ),
 				'warnings' => self::tag_report( $input['subject'] . ' ' . $input['body'], $input['form_context'], $input['attachments'] ),
 			)
 		);
@@ -137,11 +137,11 @@ class MWRIGHT_Ajax {
 	public static function delete_template() {
 		$id = self::posted_template_id();
 
-		if ( ! MWRIGHT_Template_Post_Type::get( $id ) ) {
-			wp_send_json_error( array( 'message' => __( 'Template not found.', 'mailwright-for-contact-form-7' ) ) );
+		if ( ! MDMD_Template_Post_Type::get( $id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Template not found.', 'manpreetdev-mail-designer-for-contact-form-7' ) ) );
 		}
 
-		$in_use = MWRIGHT_CF7_Bridge::forms_using( $id );
+		$in_use = MDMD_CF7_Bridge::forms_using( $id );
 
 		if ( $in_use ) {
 			wp_send_json_error(
@@ -152,7 +152,7 @@ class MWRIGHT_Ajax {
 							'This template is still assigned to %d contact form. Detach it first.',
 							'This template is still assigned to %d contact forms. Detach them first.',
 							count( $in_use ),
-							'mailwright-for-contact-form-7'
+							'manpreetdev-mail-designer-for-contact-form-7'
 						),
 						count( $in_use )
 					),
@@ -162,12 +162,12 @@ class MWRIGHT_Ajax {
 
 		wp_trash_post( $id );
 
-		wp_send_json_success( array( 'message' => __( 'Template deleted.', 'mailwright-for-contact-form-7' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Template deleted.', 'manpreetdev-mail-designer-for-contact-form-7' ) ) );
 	}
 
 	/** Duplicates a template. */
 	public static function duplicate_template() {
-		$new_id = MWRIGHT_Template_Post_Type::duplicate( self::posted_template_id() );
+		$new_id = MDMD_Template_Post_Type::duplicate( self::posted_template_id() );
 
 		if ( is_wp_error( $new_id ) ) {
 			wp_send_json_error( array( 'message' => $new_id->get_error_message() ) );
@@ -176,8 +176,8 @@ class MWRIGHT_Ajax {
 		wp_send_json_success(
 			array(
 				'id'      => $new_id,
-				'message' => __( 'Template duplicated.', 'mailwright-for-contact-form-7' ),
-				'editUrl' => MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $new_id ) ),
+				'message' => __( 'Template duplicated.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+				'editUrl' => MDMD_Plugin::url( 'template-edit', array( 'template' => $new_id ) ),
 			)
 		);
 	}
@@ -191,7 +191,7 @@ class MWRIGHT_Ajax {
 	public static function preview() {
 		$input = self::posted_template();
 
-		$rendered = MWRIGHT_Renderer::sample_render_data( $input, $input['form_context'] );
+		$rendered = MDMD_Renderer::sample_render_data( $input, $input['form_context'] );
 
 		wp_send_json_success(
 			array(
@@ -210,14 +210,14 @@ class MWRIGHT_Ajax {
 		$recipient = sanitize_email( wp_unslash( $_POST['recipient'] ?? '' ) );
 
 		if ( ! $recipient ) {
-			$recipient = MWRIGHT_Plugin::setting( 'test_recipient' );
+			$recipient = MDMD_Plugin::setting( 'test_recipient' );
 		}
 
 		if ( ! $recipient ) {
 			$recipient = wp_get_current_user()->user_email;
 		}
 
-		$result = MWRIGHT_Renderer::send_test( $input, $input['form_context'], $recipient );
+		$result = MDMD_Renderer::send_test( $input, $input['form_context'], $recipient );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -227,7 +227,7 @@ class MWRIGHT_Ajax {
 			array(
 				'message' => sprintf(
 					/* translators: %s: email address */
-					__( 'Test email sent to %s.', 'mailwright-for-contact-form-7' ),
+					__( 'Test email sent to %s.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 					$recipient
 				),
 			)
@@ -239,13 +239,13 @@ class MWRIGHT_Ajax {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended -- verified in dispatch().
 		$slot = sanitize_key( $_REQUEST['slot'] ?? '' );
 
-		$result = MWRIGHT_CF7_Bridge::assign( self::posted_form_id(), $slot, self::posted_template_id() );
+		$result = MDMD_CF7_Bridge::assign( self::posted_form_id(), $slot, self::posted_template_id() );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
-		wp_send_json_success( array( 'message' => __( 'Template assigned.', 'mailwright-for-contact-form-7' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Template assigned.', 'manpreetdev-mail-designer-for-contact-form-7' ) ) );
 	}
 
 	/** Detaches a template from a form slot. */
@@ -253,11 +253,11 @@ class MWRIGHT_Ajax {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended -- verified in dispatch().
 		$slot = sanitize_key( $_REQUEST['slot'] ?? '' );
 
-		MWRIGHT_CF7_Bridge::detach( self::posted_form_id(), $slot );
+		MDMD_CF7_Bridge::detach( self::posted_form_id(), $slot );
 
 		wp_send_json_success(
 			array(
-				'message' => __( 'Template detached. Contact Form 7 is back in control of this email.', 'mailwright-for-contact-form-7' ),
+				'message' => __( 'Template detached. Contact Form 7 is back in control of this email.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			)
 		);
 	}
@@ -274,7 +274,7 @@ class MWRIGHT_Ajax {
 
 		wp_send_json_success(
 			array(
-				'tags'    => MWRIGHT_CF7_Bridge::form_tags( $form_id ),
+				'tags'    => MDMD_CF7_Bridge::form_tags( $form_id ),
 				'report'  => self::tag_report( $content, $form_id, $attachments ),
 			)
 		);
@@ -298,9 +298,9 @@ class MWRIGHT_Ajax {
 		}
 
 		return array(
-			'unknown'     => MWRIGHT_CF7_Bridge::unknown_tags( $content, $form_id ),
-			'unused'      => MWRIGHT_CF7_Bridge::unused_tags( $content, $form_id ),
-			'attachments' => MWRIGHT_CF7_Bridge::invalid_attachments( $attachments, $form_id ),
+			'unknown'     => MDMD_CF7_Bridge::unknown_tags( $content, $form_id ),
+			'unused'      => MDMD_CF7_Bridge::unused_tags( $content, $form_id ),
+			'attachments' => MDMD_CF7_Bridge::invalid_attachments( $attachments, $form_id ),
 		);
 	}
 }

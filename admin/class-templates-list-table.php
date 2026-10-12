@@ -6,7 +6,7 @@
  * actions, screen options and accessibility for free; the plugin stylesheet
  * handles the rest of the look.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -15,7 +15,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
-class MWRIGHT_Templates_List_Table extends WP_List_Table {
+class MDMD_Templates_List_Table extends WP_List_Table {
 
 	/** Counts used by the view links. */
 	private $counts = array();
@@ -26,8 +26,8 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'singular' => 'mwright_template',
-				'plural'   => 'mwright_templates',
+				'singular' => 'mdmd_template',
+				'plural'   => 'mdmd_templates',
 				'ajax'     => false,
 			)
 		);
@@ -41,13 +41,13 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	public function get_columns() {
 		return array(
 			'cb'       => '<input type="checkbox" />',
-			'name'     => __( 'Template Name', 'mailwright-for-contact-form-7' ),
-			'type'     => __( 'Type', 'mailwright-for-contact-form-7' ),
-			'forms'    => __( 'Assigned Forms', 'mailwright-for-contact-form-7' ),
-			'files'    => __( 'File Support', 'mailwright-for-contact-form-7' ),
-			'status'   => __( 'Status', 'mailwright-for-contact-form-7' ),
-			'modified' => __( 'Updated', 'mailwright-for-contact-form-7' ),
-			'author'   => __( 'Author', 'mailwright-for-contact-form-7' ),
+			'name'     => __( 'Template Name', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'type'     => __( 'Type', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'forms'    => __( 'Assigned Forms', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'files'    => __( 'File Support', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'status'   => __( 'Status', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'modified' => __( 'Updated', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'author'   => __( 'Author', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 	}
 
@@ -70,9 +70,9 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 */
 	public function get_bulk_actions() {
 		return array(
-			'activate'   => __( 'Activate', 'mailwright-for-contact-form-7' ),
-			'deactivate' => __( 'Deactivate', 'mailwright-for-contact-form-7' ),
-			'delete'     => __( 'Delete', 'mailwright-for-contact-form-7' ),
+			'activate'   => __( 'Activate', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'deactivate' => __( 'Deactivate', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'delete'     => __( 'Delete', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 	}
 
@@ -85,22 +85,22 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 		$current = $this->current_filter();
 
 		$links = array(
-			'all'      => __( 'All', 'mailwright-for-contact-form-7' ),
-			'publish'  => __( 'Active', 'mailwright-for-contact-form-7' ),
-			'private'  => __( 'Inactive', 'mailwright-for-contact-form-7' ),
-			'draft'    => __( 'Draft', 'mailwright-for-contact-form-7' ),
-			'html'     => __( 'HTML', 'mailwright-for-contact-form-7' ),
-			'text'     => __( 'Plain Text', 'mailwright-for-contact-form-7' ),
-			'assigned' => __( 'Assigned', 'mailwright-for-contact-form-7' ),
-			'unused'   => __( 'Unused', 'mailwright-for-contact-form-7' ),
-			'files'    => __( 'Contains File Uploads', 'mailwright-for-contact-form-7' ),
-			'nofiles'  => __( 'No File Uploads', 'mailwright-for-contact-form-7' ),
+			'all'      => __( 'All', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'publish'  => __( 'Active', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'private'  => __( 'Inactive', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'draft'    => __( 'Draft', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'html'     => __( 'HTML', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'text'     => __( 'Plain Text', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'assigned' => __( 'Assigned', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'unused'   => __( 'Unused', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'files'    => __( 'Contains File Uploads', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'nofiles'  => __( 'No File Uploads', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 
 		$views = array();
 
 		foreach ( $links as $key => $label ) {
-			$url = MWRIGHT_Plugin::url( 'templates', 'all' === $key ? array() : array( 'filter' => $key ) );
+			$url = MDMD_Plugin::url( 'templates', 'all' === $key ? array() : array( 'filter' => $key ) );
 
 			$count = isset( $this->counts[ $key ] ) ? ' <span class="count">(' . (int) $this->counts[ $key ] . ')</span>' : '';
 
@@ -136,7 +136,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		$this->process_bulk_action();
 
-		$per_page = $this->get_items_per_page( 'mwright_per_page', 20 );
+		$per_page = $this->get_items_per_page( 'mdmd_per_page', 20 );
 		$filter   = $this->current_filter();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only search.
@@ -147,7 +147,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 		$order = ( isset( $_REQUEST['order'] ) && 'asc' === strtolower( sanitize_key( wp_unslash( $_REQUEST['order'] ) ) ) ) ? 'ASC' : 'DESC';
 
 		$args = array(
-			'post_type'      => MWRIGHT_Template_Post_Type::POST_TYPE,
+			'post_type'      => MDMD_Template_Post_Type::POST_TYPE,
 			'post_status'    => array( 'publish', 'draft', 'private' ),
 			'posts_per_page' => $per_page,
 			'paged'          => $this->get_pagenum(),
@@ -156,7 +156,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 			's'              => $search,
 		);
 
-		$assigned = MWRIGHT_CF7_Bridge::assigned_template_ids();
+		$assigned = MDMD_CF7_Bridge::assigned_template_ids();
 
 		switch ( $filter ) {
 			case 'publish':
@@ -168,7 +168,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 			case 'html':
 			case 'text':
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
-				$args['meta_key']   = '_mwright_type';
+				$args['meta_key']   = '_mdmd_type';
 				$args['meta_value'] = $filter; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
 				break;
 
@@ -186,7 +186,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 
 			case 'files':
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
-				$args['meta_key']   = '_mwright_has_files';
+				$args['meta_key']   = '_mdmd_has_files';
 				$args['meta_value'] = 1; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
 				break;
 
@@ -196,12 +196,12 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 				$args['meta_query'] = array(
 					'relation' => 'OR',
 					array(
-						'key'     => '_mwright_has_files',
+						'key'     => '_mdmd_has_files',
 						'value'   => 1,
 						'compare' => '!=',
 					),
 					array(
-						'key'     => '_mwright_has_files',
+						'key'     => '_mdmd_has_files',
 						'compare' => 'NOT EXISTS',
 					),
 				);
@@ -231,16 +231,16 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 * @return array
 	 */
 	private function build_counts( $assigned ) {
-		$counts     = MWRIGHT_Template_Post_Type::counts();
-		$with_files = MWRIGHT_Template_Post_Type::count_with_files();
+		$counts     = MDMD_Template_Post_Type::counts();
+		$with_files = MDMD_Template_Post_Type::count_with_files();
 
 		return array(
 			'all'      => $counts['total'],
 			'publish'  => $counts['publish'],
 			'private'  => $counts['private'],
 			'draft'    => $counts['draft'],
-			'html'     => MWRIGHT_Template_Post_Type::count_by_type( 'html' ),
-			'text'     => MWRIGHT_Template_Post_Type::count_by_type( 'text' ),
+			'html'     => MDMD_Template_Post_Type::count_by_type( 'html' ),
+			'text'     => MDMD_Template_Post_Type::count_by_type( 'text' ),
 			'assigned' => count( $assigned ),
 			'unused'   => max( 0, $counts['total'] - count( $assigned ) ),
 			'files'    => $with_files,
@@ -259,20 +259,20 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 		}
 
 		check_admin_referer( 'bulk-' . $this->_args['plural'] );
-		MWRIGHT_Plugin::require_cap();
+		MDMD_Plugin::require_cap();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- checked immediately above.
 		$ids = array_map( 'absint', (array) ( $_REQUEST['template'] ?? array() ) );
 		$ids = array_filter( $ids );
 
 		foreach ( $ids as $id ) {
-			if ( ! MWRIGHT_Template_Post_Type::get( $id ) ) {
+			if ( ! MDMD_Template_Post_Type::get( $id ) ) {
 				continue;
 			}
 
 			if ( 'delete' === $action ) {
 				// Assigned templates are protected from bulk deletion too.
-				if ( ! MWRIGHT_CF7_Bridge::forms_using( $id ) ) {
+				if ( ! MDMD_CF7_Bridge::forms_using( $id ) ) {
 					wp_trash_post( $id );
 				}
 
@@ -299,7 +299,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 			'<input type="checkbox" name="template[]" value="%d" aria-label="%s" />',
 			(int) $item->ID,
 			/* translators: %s: template name */
-			esc_attr( sprintf( __( 'Select %s', 'mailwright-for-contact-form-7' ), $item->post_title ) )
+			esc_attr( sprintf( __( 'Select %s', 'manpreetdev-mail-designer-for-contact-form-7' ), $item->post_title ) )
 		);
 	}
 
@@ -310,41 +310,41 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_name( $item ) {
-		$edit_url = MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $item->ID ) );
+		$edit_url = MDMD_Plugin::url( 'template-edit', array( 'template' => $item->ID ) );
 
 		$name = sprintf(
 			'<a class="row-title" href="%s">%s</a>',
 			esc_url( $edit_url ),
-			esc_html( $item->post_title ? $item->post_title : __( '(no name)', 'mailwright-for-contact-form-7' ) )
+			esc_html( $item->post_title ? $item->post_title : __( '(no name)', 'manpreetdev-mail-designer-for-contact-form-7' ) )
 		);
 
 		if ( $item->post_excerpt ) {
-			$name .= '<div class="mwright-muted">' . esc_html( wp_trim_words( $item->post_excerpt, 16 ) ) . '</div>';
+			$name .= '<div class="mdmd-muted">' . esc_html( wp_trim_words( $item->post_excerpt, 16 ) ) . '</div>';
 		}
 
 		$actions = array(
-			'edit'      => sprintf( '<a href="%s">%s</a>', esc_url( $edit_url ), esc_html__( 'Edit', 'mailwright-for-contact-form-7' ) ),
+			'edit'      => sprintf( '<a href="%s">%s</a>', esc_url( $edit_url ), esc_html__( 'Edit', 'manpreetdev-mail-designer-for-contact-form-7' ) ),
 			'preview'   => sprintf(
-				'<a href="%s#preview" data-mwright-preview="%d">%s</a>',
+				'<a href="%s#preview" data-mdmd-preview="%d">%s</a>',
 				esc_url( $edit_url ),
 				(int) $item->ID,
-				esc_html__( 'Preview', 'mailwright-for-contact-form-7' )
+				esc_html__( 'Preview', 'manpreetdev-mail-designer-for-contact-form-7' )
 			),
 			'duplicate' => sprintf(
-				'<a href="#" data-mwright-duplicate="%d">%s</a>',
+				'<a href="#" data-mdmd-duplicate="%d">%s</a>',
 				(int) $item->ID,
-				esc_html__( 'Duplicate', 'mailwright-for-contact-form-7' )
+				esc_html__( 'Duplicate', 'manpreetdev-mail-designer-for-contact-form-7' )
 			),
 			'assign'    => sprintf(
 				'<a href="%s">%s</a>',
-				esc_url( MWRIGHT_Plugin::url( 'assignments', array( 'template' => $item->ID ) ) ),
-				esc_html__( 'Assign', 'mailwright-for-contact-form-7' )
+				esc_url( MDMD_Plugin::url( 'assignments', array( 'template' => $item->ID ) ) ),
+				esc_html__( 'Assign', 'manpreetdev-mail-designer-for-contact-form-7' )
 			),
 			'delete'    => sprintf(
-				'<a href="#" class="mwright-danger-link" data-mwright-delete="%d" data-name="%s">%s</a>',
+				'<a href="#" class="mdmd-danger-link" data-mdmd-delete="%d" data-name="%s">%s</a>',
 				(int) $item->ID,
 				esc_attr( $item->post_title ),
-				esc_html__( 'Delete', 'mailwright-for-contact-form-7' )
+				esc_html__( 'Delete', 'manpreetdev-mail-designer-for-contact-form-7' )
 			),
 		);
 
@@ -358,11 +358,11 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_type( $item ) {
-		$type = get_post_meta( $item->ID, '_mwright_type', true );
+		$type = get_post_meta( $item->ID, '_mdmd_type', true );
 
 		return 'text' === $type
-			? '<span class="mwright-badge mwright-badge--neutral">' . esc_html__( 'Plain Text', 'mailwright-for-contact-form-7' ) . '</span>'
-			: '<span class="mwright-badge mwright-badge--info">' . esc_html__( 'HTML', 'mailwright-for-contact-form-7' ) . '</span>';
+			? '<span class="mdmd-badge mdmd-badge--neutral">' . esc_html__( 'Plain Text', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</span>'
+			: '<span class="mdmd-badge mdmd-badge--info">' . esc_html__( 'HTML', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</span>';
 	}
 
 	/**
@@ -372,13 +372,13 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_forms( $item ) {
-		$form_ids = MWRIGHT_CF7_Bridge::forms_using( $item->ID );
+		$form_ids = MDMD_CF7_Bridge::forms_using( $item->ID );
 
 		if ( ! $form_ids ) {
-			return '<span class="mwright-muted">' . esc_html__( 'Not assigned', 'mailwright-for-contact-form-7' ) . '</span>';
+			return '<span class="mdmd-muted">' . esc_html__( 'Not assigned', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</span>';
 		}
 
-		$forms = MWRIGHT_CF7_Bridge::forms();
+		$forms = MDMD_CF7_Bridge::forms();
 		$names = array();
 
 		foreach ( $form_ids as $form_id ) {
@@ -395,20 +395,20 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_files( $item ) {
-		$spec = trim( (string) get_post_meta( $item->ID, '_mwright_attachments', true ) );
+		$spec = trim( (string) get_post_meta( $item->ID, '_mdmd_attachments', true ) );
 
 		if ( '' === $spec ) {
-			return '<span class="mwright-muted">' . esc_html__( 'None', 'mailwright-for-contact-form-7' ) . '</span>';
+			return '<span class="mdmd-muted">' . esc_html__( 'None', 'manpreetdev-mail-designer-for-contact-form-7' ) . '</span>';
 		}
 
 		$count = count( explode( "\n", $spec ) );
 
 		return sprintf(
-			'<span class="mwright-badge mwright-badge--info">%s</span>',
+			'<span class="mdmd-badge mdmd-badge--info">%s</span>',
 			esc_html(
 				sprintf(
 					/* translators: %d: number of file upload fields attached */
-					_n( '%d file field', '%d file fields', $count, 'mailwright-for-contact-form-7' ),
+					_n( '%d file field', '%d file fields', $count, 'manpreetdev-mail-designer-for-contact-form-7' ),
 					$count
 				)
 			)
@@ -429,9 +429,9 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 		};
 
 		return sprintf(
-			'<span class="mwright-badge mwright-badge--%s">%s</span>',
+			'<span class="mdmd-badge mdmd-badge--%s">%s</span>',
 			esc_attr( $modifier ),
-			esc_html( MWRIGHT_Template_Post_Type::status_label( $item->post_status ) )
+			esc_html( MDMD_Template_Post_Type::status_label( $item->post_status ) )
 		);
 	}
 
@@ -454,7 +454,7 @@ class MWRIGHT_Templates_List_Table extends WP_List_Table {
 			esc_html(
 				sprintf(
 					/* translators: %s: human-readable time difference */
-					__( '%s ago', 'mailwright-for-contact-form-7' ),
+					__( '%s ago', 'manpreetdev-mail-designer-for-contact-form-7' ),
 					human_time_diff( $timestamp )
 				)
 			)

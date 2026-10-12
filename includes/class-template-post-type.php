@@ -7,17 +7,17 @@
  * post_excerpt => description
  * post_status  => publish (active) | draft | private (inactive)
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_Template_Post_Type {
+class MDMD_Template_Post_Type {
 
-	const POST_TYPE = 'mwright_template';
+	const POST_TYPE = 'mdmd_template';
 
 	/** Prefix every meta key shares. */
-	const META_PREFIX = '_mwright_';
+	const META_PREFIX = '_mdmd_';
 
 	/**
 	 * Meta key => sanitize callback. Also drives save() and duplicate().
@@ -26,16 +26,16 @@ class MWRIGHT_Template_Post_Type {
 	 */
 	public static function meta_fields() {
 		return array(
-			'_mwright_type'          => 'sanitize_key',
-			'_mwright_subject'       => 'sanitize_text_field',
-			'_mwright_preview_text'  => 'sanitize_text_field',
-			'_mwright_recipient'     => 'sanitize_text_field',
-			'_mwright_sender'        => 'sanitize_text_field',
-			'_mwright_headers'       => array( __CLASS__, 'sanitize_headers' ),
-			'_mwright_attachments'   => array( __CLASS__, 'sanitize_attachments' ),
-			'_mwright_exclude_blank' => 'absint',
-			'_mwright_category'      => 'sanitize_text_field',
-			'_mwright_form_context'  => 'absint',
+			'_mdmd_type'          => 'sanitize_key',
+			'_mdmd_subject'       => 'sanitize_text_field',
+			'_mdmd_preview_text'  => 'sanitize_text_field',
+			'_mdmd_recipient'     => 'sanitize_text_field',
+			'_mdmd_sender'        => 'sanitize_text_field',
+			'_mdmd_headers'       => array( __CLASS__, 'sanitize_headers' ),
+			'_mdmd_attachments'   => array( __CLASS__, 'sanitize_attachments' ),
+			'_mdmd_exclude_blank' => 'absint',
+			'_mdmd_category'      => 'sanitize_text_field',
+			'_mdmd_form_context'  => 'absint',
 		);
 	}
 
@@ -46,7 +46,7 @@ class MWRIGHT_Template_Post_Type {
 		register_post_type(
 			self::POST_TYPE,
 			array(
-				'label'               => __( 'Email Templates', 'mailwright-for-contact-form-7' ),
+				'label'               => __( 'Email Templates', 'manpreetdev-mail-designer-for-contact-form-7' ),
 				'public'              => false,
 				'show_ui'             => false, // We render our own screens.
 				'show_in_rest'        => false,
@@ -60,10 +60,10 @@ class MWRIGHT_Template_Post_Type {
 		);
 
 		$auth = static function () {
-			return current_user_can( MWRIGHT_Plugin::cap() );
+			return current_user_can( MDMD_Plugin::cap() );
 		};
 
-		$integers = array( '_mwright_exclude_blank', '_mwright_form_context' );
+		$integers = array( '_mdmd_exclude_blank', '_mdmd_form_context' );
 
 		foreach ( self::meta_fields() as $key => $sanitize ) {
 			register_post_meta(
@@ -141,7 +141,7 @@ class MWRIGHT_Template_Post_Type {
 	 */
 	public static function email_kses() {
 		$global = array(
-			// The visual builder marks each block with data-mwright-block.
+			// The visual builder marks each block with data-mdmd-block.
 			'data-*' => true,
 			'style'  => true,
 			'class'  => true,
@@ -282,7 +282,7 @@ class MWRIGHT_Template_Post_Type {
 		$name = sanitize_text_field( $input['name'] ?? '' );
 
 		if ( '' === trim( $name ) ) {
-			return new WP_Error( 'mwright_no_name', __( 'Please give the template a name.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_no_name', __( 'Please give the template a name.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		$status  = $input['status'] ?? 'publish';
@@ -329,9 +329,9 @@ class MWRIGHT_Template_Post_Type {
 		 * Derived flag, so "does this template attach files?" is a meta lookup
 		 * for the list filters and the dashboard rather than a LIKE scan.
 		 */
-		$spec = trim( (string) get_post_meta( $id, '_mwright_attachments', true ) );
+		$spec = trim( (string) get_post_meta( $id, '_mdmd_attachments', true ) );
 
-		update_post_meta( $id, '_mwright_has_files', '' === $spec ? 0 : 1 );
+		update_post_meta( $id, '_mdmd_has_files', '' === $spec ? 0 : 1 );
 
 		return $id;
 	}
@@ -346,14 +346,14 @@ class MWRIGHT_Template_Post_Type {
 		$source = self::get( $id );
 
 		if ( ! $source ) {
-			return new WP_Error( 'mwright_not_found', __( 'Template not found.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_not_found', __( 'Template not found.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		$copy = $source;
 
 		$copy['id'] = 0;
 		/* translators: %s: original template name */
-		$copy['name']   = sprintf( __( '%s Copy', 'mailwright-for-contact-form-7' ), $source['name'] );
+		$copy['name']   = sprintf( __( '%s Copy', 'manpreetdev-mail-designer-for-contact-form-7' ), $source['name'] );
 		$copy['status'] = 'draft'; // A copy should never go live by accident.
 
 		return self::save( $copy );
@@ -392,7 +392,7 @@ class MWRIGHT_Template_Post_Type {
 				'posts_per_page' => 1,
 				'fields'         => 'ids',
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
-				'meta_key'       => '_mwright_type',
+				'meta_key'       => '_mdmd_type',
 				'meta_value'     => $type, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
 			)
 		);
@@ -413,7 +413,7 @@ class MWRIGHT_Template_Post_Type {
 				'posts_per_page' => 1,
 				'fields'         => 'ids',
 				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
-				'meta_key'       => '_mwright_has_files',
+				'meta_key'       => '_mdmd_has_files',
 				'meta_value'     => 1, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- an admin-only filter over a small, indexed set of templates.
 			)
 		);
@@ -455,9 +455,9 @@ class MWRIGHT_Template_Post_Type {
 	 */
 	public static function status_label( $status ) {
 		return match ( $status ) {
-			'publish' => __( 'Active', 'mailwright-for-contact-form-7' ),
-			'draft'   => __( 'Draft', 'mailwright-for-contact-form-7' ),
-			'private' => __( 'Inactive', 'mailwright-for-contact-form-7' ),
+			'publish' => __( 'Active', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'draft'   => __( 'Draft', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'private' => __( 'Inactive', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			default   => $status,
 		};
 	}

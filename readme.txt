@@ -1,4 +1,4 @@
-=== Mailwright for Contact Form 7 ===
+=== ManpreetDev Mail Designer for Contact Form 7 ===
 Contributors: manpreetdev21
 Tags: contact form 7, email template, html email, email designer, submissions
 Requires at least: 6.5
@@ -12,7 +12,7 @@ Reusable, brandable email templates for Contact Form 7. Design once, assign to a
 
 == Description ==
 
-Mailwright for Contact Form 7 is a template layer for Contact Form 7. Contact Form 7 keeps doing what it does best — rendering, validating and submitting forms, and sending the mail. This plugin manages what those emails look like, and keeps a record of what people sent.
+ManpreetDev Mail Designer for Contact Form 7 is a template layer for Contact Form 7. Contact Form 7 keeps doing what it does best — rendering, validating and submitting forms, and sending the mail. This plugin manages what those emails look like, and keeps a record of what people sent.
 
 **Your Contact Form 7 settings are never overwritten.** Templates are applied at runtime, so your form's own Mail configuration stays exactly as you left it and takes over again the moment you detach a template.
 
@@ -53,7 +53,7 @@ Mailwright for Contact Form 7 is a template layer for Contact Form 7. Contact Fo
 
 1. Install and activate Contact Form 7.
 2. Upload this plugin to `/wp-content/plugins/` and activate it.
-3. Go to **Mailwright** in the admin menu.
+3. Go to **Mail Designer** in the admin menu.
 
 The nine starter templates are installed the first time an editor opens the admin with Contact Form 7 active. You can add any that are missing later from Tools.
 
@@ -88,7 +88,7 @@ Templates, submissions and stored files all stay. They are only removed if you t
 == Changelog ==
 
 = 2.0.0 =
-* Renamed the plugin to Mailwright for Contact Form 7. Existing templates, submissions, branding and settings are migrated automatically on the first admin page load.
+* Renamed the plugin to ManpreetDev Mail Designer for Contact Form 7. Existing templates, submissions, branding and settings are migrated automatically on the first admin page load.
 * Added the Requires Plugins header, so WordPress 6.5+ checks for Contact Form 7 before activation.
 * The missing-dependency notice now appears only on this plugin's screens and the plugins list.
 

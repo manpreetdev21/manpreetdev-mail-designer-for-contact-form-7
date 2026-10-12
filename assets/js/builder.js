@@ -1,18 +1,18 @@
 /**
- * Mailwright for Contact Form 7 — visual block builder.
+ * ManpreetDev Mail Designer for Contact Form 7 — visual block builder.
  *
  * The body HTML stays the single source of truth. Blocks are parsed out of it
  * when the visual tab opens and written straight back on every edit, so save,
  * preview, test emails and the tag report keep working untouched.
  *
- * Every block is one <td data-mwright-block="type"> row in the email table.
+ * Every block is one <td data-mdmd-block="type"> row in the email table.
  */
 ( function ( $ ) {
 	'use strict';
 
-	const root = document.querySelector( '.mwright-editor' );
-	const bridge = window.mwrightBody;
-	const config = window.mwrightEditor || {};
+	const root = document.querySelector( '.mdmd-editor' );
+	const bridge = window.mdmdBody;
+	const config = window.mdmdEditor || {};
 
 	if ( ! root || ! bridge || ! $ || ! $.fn.sortable ) {
 		return;
@@ -120,7 +120,7 @@
 	 * @return {string} Table row.
 	 */
 	function row( type, data, style, inner ) {
-		let attrs = ' data-mwright-block="' + type + '"';
+		let attrs = ' data-mdmd-block="' + type + '"';
 
 		Object.keys( data ).forEach( ( key ) => {
 			if ( data[ key ] !== '' && data[ key ] !== null && data[ key ] !== undefined ) {
@@ -425,26 +425,26 @@
 		const spec = BLOCKS[ type ];
 		const el = document.createElement( 'div' );
 
-		el.className = 'mwright-block';
+		el.className = 'mdmd-block';
 		el.dataset.type = type;
 		el._block = data;
 
 		const bar = document.createElement( 'div' );
-		bar.className = 'mwright-block__bar';
+		bar.className = 'mdmd-block__bar';
 
 		const handle = document.createElement( 'span' );
-		handle.className = 'mwright-block__handle dashicons dashicons-menu';
+		handle.className = 'mdmd-block__handle dashicons dashicons-menu';
 		handle.setAttribute( 'aria-hidden', 'true' );
 
 		const title = document.createElement( 'span' );
-		title.className = 'mwright-block__title';
+		title.className = 'mdmd-block__title';
 		title.textContent = config.blocks && config.blocks[ type ] ? config.blocks[ type ] : type;
 
 		bar.appendChild( handle );
 		bar.appendChild( title );
 
 		const tools = document.createElement( 'span' );
-		tools.className = 'mwright-block__tools';
+		tools.className = 'mdmd-block__tools';
 
 		[
 			[ 'up', 'arrow-up-alt2', t.moveUp ],
@@ -454,7 +454,7 @@
 		].forEach( ( pair ) => {
 			const button = document.createElement( 'button' );
 			button.type = 'button';
-			button.className = 'mwright-block__tool';
+			button.className = 'mdmd-block__tool';
 			button.dataset.blockAction = pair[ 0 ];
 			button.setAttribute( 'aria-label', pair[ 2 ] || pair[ 0 ] );
 			button.title = pair[ 2 ] || pair[ 0 ];
@@ -471,7 +471,7 @@
 		el.appendChild( bar );
 
 		const body = document.createElement( 'div' );
-		body.className = 'mwright-block__body';
+		body.className = 'mdmd-block__body';
 
 		spec.fields.forEach( ( field ) => body.appendChild( fieldNode( field, data ) ) );
 
@@ -489,10 +489,10 @@
 	 */
 	function fieldNode( spec, block ) {
 		const wrap = document.createElement( 'label' );
-		wrap.className = 'mwright-block__field mwright-block__field--' + spec.type;
+		wrap.className = 'mdmd-block__field mdmd-block__field--' + spec.type;
 
 		const name = document.createElement( 'span' );
-		name.className = 'mwright-block__label';
+		name.className = 'mdmd-block__label';
 		name.textContent = spec.label || spec.prop;
 		wrap.appendChild( name );
 
@@ -532,7 +532,7 @@
 		if ( 'media' === spec.type && window.wp && window.wp.media ) {
 			const choose = document.createElement( 'button' );
 			choose.type = 'button';
-			choose.className = 'mwright-btn mwright-btn--small';
+			choose.className = 'mdmd-btn mdmd-btn--small';
 			choose.dataset.blockAction = 'media';
 			choose.textContent = t.chooseImage || 'Choose image';
 			wrap.appendChild( choose );
@@ -540,7 +540,7 @@
 
 		if ( spec.help ) {
 			const help = document.createElement( 'span' );
-			help.className = 'mwright-help';
+			help.className = 'mdmd-help';
 			help.textContent = spec.help;
 			wrap.appendChild( help );
 		}
@@ -556,18 +556,18 @@
 	 */
 	function rowsEditor( block ) {
 		const wrap = document.createElement( 'span' );
-		wrap.className = 'mwright-block__rows';
+		wrap.className = 'mdmd-block__rows';
 		wrap.dataset.rows = '1';
 
 		( block.rows || [] ).forEach( ( item ) => wrap.appendChild( fieldRow( item ) ) );
 
 		const actions = document.createElement( 'span' );
-		actions.className = 'mwright-block__rowactions';
+		actions.className = 'mdmd-block__rowactions';
 
 		[ [ 'add-row', t.addRow ], [ 'fill-rows', t.addFormFields ] ].forEach( ( pair ) => {
 			const button = document.createElement( 'button' );
 			button.type = 'button';
-			button.className = 'mwright-btn mwright-btn--small';
+			button.className = 'mdmd-btn mdmd-btn--small';
 			button.dataset.blockAction = pair[ 0 ];
 			button.textContent = pair[ 1 ] || pair[ 0 ];
 			actions.appendChild( button );
@@ -586,7 +586,7 @@
 	 */
 	function fieldRow( item ) {
 		const line = document.createElement( 'span' );
-		line.className = 'mwright-block__row';
+		line.className = 'mdmd-block__row';
 
 		[ [ 'label', t.rowLabel ], [ 'tag', t.rowTag ] ].forEach( ( pair ) => {
 			const input = document.createElement( 'input' );
@@ -599,7 +599,7 @@
 
 		const remove = document.createElement( 'button' );
 		remove.type = 'button';
-		remove.className = 'mwright-block__tool';
+		remove.className = 'mdmd-block__tool';
 		remove.dataset.blockAction = 'remove-row';
 		remove.setAttribute( 'aria-label', t.removeRow || 'Remove row' );
 		remove.title = t.removeRow || 'Remove row';
@@ -620,7 +620,7 @@
 
 	/** @return {Array} Cards currently on the canvas. */
 	function cards() {
-		return Array.from( canvas.children ).filter( ( el ) => el.classList.contains( 'mwright-block' ) );
+		return Array.from( canvas.children ).filter( ( el ) => el.classList.contains( 'mdmd-block' ) );
 	}
 
 	let syncTimer = null;
@@ -654,17 +654,17 @@
 	 */
 	function parse( html ) {
 		const doc = new DOMParser().parseFromString( html, 'text/html' );
-		const cells = doc.querySelectorAll( '[data-mwright-block]' );
+		const cells = doc.querySelectorAll( '[data-mdmd-block]' );
 
 		if ( ! cells.length ) {
 			return null;
 		}
 
 		return Array.from( cells )
-			.filter( ( el ) => BLOCKS[ el.dataset.mwrightBlock ] )
+			.filter( ( el ) => BLOCKS[ el.dataset.mdmdBlock ] )
 			.map( ( el ) => ( {
-				type: el.dataset.mwrightBlock,
-				data: BLOCKS[ el.dataset.mwrightBlock ].parse( el ),
+				type: el.dataset.mdmdBlock,
+				data: BLOCKS[ el.dataset.mdmdBlock ].parse( el ),
 			} ) );
 	}
 
@@ -850,7 +850,7 @@
 	 */
 	function onEdit( event ) {
 		const input = event.target.closest( '[data-prop], [data-row-prop]' );
-		const host = input && input.closest( '.mwright-block' );
+		const host = input && input.closest( '.mdmd-block' );
 
 		if ( ! host ) {
 			return;
@@ -872,7 +872,7 @@
 	 * @return {Array} Rows.
 	 */
 	function readRows( host ) {
-		return Array.from( host.querySelectorAll( '.mwright-block__row' ) ).map( ( line ) => ( {
+		return Array.from( host.querySelectorAll( '.mdmd-block__row' ) ).map( ( line ) => ( {
 			label: line.querySelector( '[data-row-prop="label"]' ).value,
 			tag: line.querySelector( '[data-row-prop="tag"]' ).value,
 		} ) );
@@ -885,7 +885,7 @@
 			return;
 		}
 
-		const host = button.closest( '.mwright-block' );
+		const host = button.closest( '.mdmd-block' );
 		const action = button.dataset.blockAction;
 
 		if ( 'up' === action && host.previousElementSibling ) {
@@ -897,10 +897,10 @@
 		} else if ( 'delete' === action ) {
 			host.remove();
 		} else if ( 'add-row' === action ) {
-			button.closest( '.mwright-block__rowactions' ).before( fieldRow( {} ) );
+			button.closest( '.mdmd-block__rowactions' ).before( fieldRow( {} ) );
 			host._block.rows = readRows( host );
 		} else if ( 'remove-row' === action ) {
-			button.closest( '.mwright-block__row' ).remove();
+			button.closest( '.mdmd-block__row' ).remove();
 			host._block.rows = readRows( host );
 		} else if ( 'fill-rows' === action ) {
 			fillRows( host, button );
@@ -921,7 +921,7 @@
 	 * @param {HTMLElement} button The button that was clicked.
 	 */
 	function fillRows( host, button ) {
-		const actions = button.closest( '.mwright-block__rowactions' );
+		const actions = button.closest( '.mdmd-block__rowactions' );
 		const existing = readRows( host ).map( ( item ) => item.tag );
 
 		bridge.tags().forEach( ( tag ) => {
@@ -933,7 +933,7 @@
 		} );
 
 		// Blank starter rows are noise once real fields arrive.
-		host.querySelectorAll( '.mwright-block__row' ).forEach( ( line ) => {
+		host.querySelectorAll( '.mdmd-block__row' ).forEach( ( line ) => {
 			const values = Array.from( line.querySelectorAll( 'input' ) ).map( ( input ) => input.value.trim() );
 
 			if ( '' === values.join( '' ) ) {
@@ -986,8 +986,8 @@
 	/* ------------------------------------------------------------------ */
 
 	$( canvas ).sortable( {
-		handle: '.mwright-block__handle',
-		placeholder: 'mwright-block__placeholder',
+		handle: '.mdmd-block__handle',
+		placeholder: 'mdmd-block__placeholder',
 		forcePlaceholderSize: true,
 		tolerance: 'pointer',
 		update: sync,
@@ -1080,7 +1080,7 @@
 		} );
 
 		try {
-			window.localStorage.setItem( 'mwrightEditorMode', mode );
+			window.localStorage.setItem( 'mdmdEditorMode', mode );
 		} catch ( error ) {
 			// Storage unavailable; the mode simply resets next time.
 		}
@@ -1118,7 +1118,7 @@
 	let startMode = 'visual';
 
 	try {
-		startMode = window.localStorage.getItem( 'mwrightEditorMode' ) || 'visual';
+		startMode = window.localStorage.getItem( 'mdmdEditorMode' ) || 'visual';
 	} catch ( error ) {
 		startMode = 'visual';
 	}

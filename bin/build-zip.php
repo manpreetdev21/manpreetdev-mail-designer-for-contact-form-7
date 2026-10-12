@@ -9,7 +9,7 @@
  *
  * Usage:  php bin/build-zip.php
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 if ( 'cli' !== PHP_SAPI ) {
@@ -36,7 +36,7 @@ foreach ( file( $root . '/.distignore', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_
  * @param array  $patterns Patterns from .distignore.
  * @return bool
  */
-function mwright_is_excluded( $relative, $patterns ) {
+function mdmd_is_excluded( $relative, $patterns ) {
 	foreach ( $patterns as $pattern ) {
 		$first = explode( '/', $relative )[0];
 
@@ -71,7 +71,7 @@ $skipped = array();
 foreach ( $files as $file ) {
 	$relative = str_replace( '\\', '/', substr( $file->getPathname(), strlen( $root ) + 1 ) );
 
-	if ( mwright_is_excluded( $relative, $excluded ) ) {
+	if ( mdmd_is_excluded( $relative, $excluded ) ) {
 		$skipped[ explode( '/', $relative )[0] ] = true;
 		continue;
 	}

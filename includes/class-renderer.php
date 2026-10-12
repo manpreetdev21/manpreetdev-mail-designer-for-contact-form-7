@@ -6,12 +6,12 @@
  * CF7 keeps doing the mail-tag replacement, the HTML wrapping and the sending.
  * We only ever hand it strings.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_Renderer {
+class MDMD_Renderer {
 
 	/**
 	 * Builds a CF7 mail property array from a template.
@@ -27,7 +27,7 @@ class MWRIGHT_Renderer {
 	 * @return array|null Null when the template cannot be used.
 	 */
 	public static function to_mail_array( $template_id, $existing = array(), $slot = 'admin', $form = null ) {
-		$template = MWRIGHT_Template_Post_Type::get( $template_id );
+		$template = MDMD_Template_Post_Type::get( $template_id );
 
 		// Only active templates are allowed to take over a live form.
 		if ( ! $template || 'publish' !== $template['status'] ) {
@@ -38,7 +38,7 @@ class MWRIGHT_Renderer {
 
 		$body = self::prepare_body( $template );
 
-		$subject = MWRIGHT_Branding::replace( (string) $template['subject'], false );
+		$subject = MDMD_Branding::replace( (string) $template['subject'], false );
 
 		if ( '' === trim( $subject ) ) {
 			$subject = (string) ( $existing['subject'] ?? '' );
@@ -61,7 +61,7 @@ class MWRIGHT_Renderer {
 		}
 
 		if ( '' === $sender ) {
-			$sender = trim( (string) MWRIGHT_Plugin::setting( 'default_sender' ) );
+			$sender = trim( (string) MDMD_Plugin::setting( 'default_sender' ) );
 		}
 
 		if ( '' === $sender ) {
@@ -107,7 +107,7 @@ class MWRIGHT_Renderer {
 	 */
 	public static function prepare_body( $template ) {
 		$is_html = 'html' === $template['type'];
-		$body    = MWRIGHT_Branding::replace( (string) $template['body'], $is_html );
+		$body    = MDMD_Branding::replace( (string) $template['body'], $is_html );
 
 		$preview = trim( (string) $template['preview_text'] );
 
@@ -157,11 +157,11 @@ class MWRIGHT_Renderer {
 	public static function sample_values( $form_id ) {
 		$values = array();
 
-		foreach ( MWRIGHT_CF7_Bridge::form_tags( $form_id ) as $tag ) {
+		foreach ( MDMD_CF7_Bridge::form_tags( $form_id ) as $tag ) {
 			$values[ $tag['name'] ] = self::sample_for_tag( $tag );
 		}
 
-		$form = MWRIGHT_CF7_Bridge::form( $form_id );
+		$form = MDMD_CF7_Bridge::form( $form_id );
 
 		$specials = array(
 			'_site_title'         => get_bloginfo( 'name' ),
@@ -169,15 +169,15 @@ class MWRIGHT_Renderer {
 			'_site_url'           => home_url( '/' ),
 			'_site_domain'        => wp_parse_url( home_url(), PHP_URL_HOST ),
 			'_site_admin_email'   => get_option( 'admin_email' ),
-			'_contact_form_title' => $form ? $form->title() : __( 'Contact Form', 'mailwright-for-contact-form-7' ),
+			'_contact_form_title' => $form ? $form->title() : __( 'Contact Form', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_date'               => wp_date( get_option( 'date_format' ) ),
 			'_time'               => wp_date( get_option( 'time_format' ) ),
 			'_url'                => home_url( '/contact/' ),
 			'_remote_ip'          => '203.0.113.42',
 			'_user_agent'         => 'Mozilla/5.0 (Sample Browser)',
-			'_post_title'         => __( 'Sample Page', 'mailwright-for-contact-form-7' ),
+			'_post_title'         => __( 'Sample Page', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_post_url'           => home_url( '/contact/' ),
-			'_post_author'        => __( 'Site Editor', 'mailwright-for-contact-form-7' ),
+			'_post_author'        => __( 'Site Editor', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_post_author_email'  => get_option( 'admin_email' ),
 			'_post_id'            => '42',
 			'_post_name'          => 'sample-page',
@@ -198,7 +198,7 @@ class MWRIGHT_Renderer {
 	/**
 	 * Picks a sample value based on the field type, then the field name.
 	 *
-	 * @param array $tag Tag detail from MWRIGHT_CF7_Bridge::form_tags().
+	 * @param array $tag Tag detail from MDMD_CF7_Bridge::form_tags().
 	 * @return string
 	 */
 	private static function sample_for_tag( $tag ) {
@@ -212,9 +212,9 @@ class MWRIGHT_Renderer {
 			'url'                         => 'https://example.com',
 			'date'                        => wp_date( 'Y-m-d' ),
 			'number', 'range'             => '42',
-			'textarea'                    => __( 'This is a sample enquiry. Please treat it as test data.', 'mailwright-for-contact-form-7' ),
+			'textarea'                    => __( 'This is a sample enquiry. Please treat it as test data.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'file'                        => 'document.pdf',
-			'acceptance', 'checkbox'      => __( 'Yes', 'mailwright-for-contact-form-7' ),
+			'acceptance', 'checkbox'      => __( 'Yes', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			default                       => null,
 		};
 
@@ -228,9 +228,9 @@ class MWRIGHT_Renderer {
 			str_contains( $name, 'name' )                                  => 'John Smith',
 			str_contains( $name, 'phone' ) || str_contains( $name, 'tel' ) => '+1 555 123 456',
 			str_contains( $name, 'company' )                               => 'Example Ltd',
-			str_contains( $name, 'subject' )                               => __( 'Website enquiry', 'mailwright-for-contact-form-7' ),
-			str_contains( $name, 'message' )                               => __( 'This is a sample enquiry.', 'mailwright-for-contact-form-7' ),
-			default                                                        => __( 'Sample value', 'mailwright-for-contact-form-7' ),
+			str_contains( $name, 'subject' )                               => __( 'Website enquiry', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			str_contains( $name, 'message' )                               => __( 'This is a sample enquiry.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			default                                                        => __( 'Sample value', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		};
 	}
 
@@ -242,10 +242,10 @@ class MWRIGHT_Renderer {
 	 * @return array|WP_Error [ subject, body, type ].
 	 */
 	public static function sample_render( $template_id, $form_id ) {
-		$template = MWRIGHT_Template_Post_Type::get( $template_id );
+		$template = MDMD_Template_Post_Type::get( $template_id );
 
 		if ( ! $template ) {
-			return new WP_Error( 'mwright_not_found', __( 'Template not found.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_not_found', __( 'Template not found.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		return self::sample_render_data( $template, $form_id );
@@ -272,7 +272,7 @@ class MWRIGHT_Renderer {
 		}
 
 		$body    = str_replace( $search, $replace, self::prepare_body( $template ) );
-		$subject = str_replace( $search, $replace, MWRIGHT_Branding::replace( (string) ( $template['subject'] ?? '' ), false ) );
+		$subject = str_replace( $search, $replace, MDMD_Branding::replace( (string) ( $template['subject'] ?? '' ), false ) );
 
 		if ( $is_html && ! preg_match( '#<html[>\s]#i', $body ) ) {
 			// Mirror what CF7's WPCF7_Mail::htmlize() would do when sending.
@@ -299,14 +299,14 @@ class MWRIGHT_Renderer {
 		$recipient = sanitize_email( $recipient );
 
 		if ( ! is_email( $recipient ) ) {
-			return new WP_Error( 'mwright_bad_email', __( 'Please enter a valid email address.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_bad_email', __( 'Please enter a valid email address.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		// Cheap brake on using test sends as a mailer.
-		if ( get_transient( 'mwright_test_throttle_' . get_current_user_id() ) ) {
+		if ( get_transient( 'mdmd_test_throttle_' . get_current_user_id() ) ) {
 			return new WP_Error(
-				'mwright_throttled',
-				__( 'Please wait a moment before sending another test email.', 'mailwright-for-contact-form-7' )
+				'mdmd_throttled',
+				__( 'Please wait a moment before sending another test email.', 'manpreetdev-mail-designer-for-contact-form-7' )
 			);
 		}
 
@@ -317,15 +317,15 @@ class MWRIGHT_Renderer {
 
 		$subject = sprintf(
 			/* translators: %s: rendered subject line */
-			__( '[TEST] %s', 'mailwright-for-contact-form-7' ),
+			__( '[TEST] %s', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			$rendered['subject']
 		);
 
 		$sent = wp_mail( $recipient, $subject, $rendered['body'], $headers );
 
-		set_transient( 'mwright_test_throttle_' . get_current_user_id(), 1, 60 );
+		set_transient( 'mdmd_test_throttle_' . get_current_user_id(), 1, 60 );
 
-		MWRIGHT_Plugin::log(
+		MDMD_Plugin::log(
 			sprintf(
 				'Test email to %s — %s.',
 				$recipient,
@@ -335,8 +335,8 @@ class MWRIGHT_Renderer {
 
 		if ( ! $sent ) {
 			return new WP_Error(
-				'mwright_send_failed',
-				__( 'WordPress could not send the test email. Check your site\'s email configuration or SMTP plugin.', 'mailwright-for-contact-form-7' )
+				'mdmd_send_failed',
+				__( 'WordPress could not send the test email. Check your site\'s email configuration or SMTP plugin.', 'manpreetdev-mail-designer-for-contact-form-7' )
 			);
 		}
 

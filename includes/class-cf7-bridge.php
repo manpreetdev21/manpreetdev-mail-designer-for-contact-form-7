@@ -10,14 +10,14 @@
  *  - an administrator's hand-written CF7 mail config is never destroyed,
  *  - detaching restores CF7's original settings with no migration.
  *
- * @package Mailwright_For_Contact_Form_7
+ * @package ManpreetDev_Mail_Designer_For_Contact_Form_7
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MWRIGHT_CF7_Bridge {
+class MDMD_CF7_Bridge {
 
-	const OPTION = 'mwright_assignments';
+	const OPTION = 'mdmd_assignments';
 
 	/** Template slot => CF7 mail property. */
 	const SLOTS = array(
@@ -84,7 +84,7 @@ class MWRIGHT_CF7_Bridge {
 				continue;
 			}
 
-			$mail = MWRIGHT_Renderer::to_mail_array(
+			$mail = MDMD_Renderer::to_mail_array(
 				$template_id,
 				(array) ( $properties[ $prop ] ?? array() ),
 				$slot,
@@ -217,15 +217,15 @@ class MWRIGHT_CF7_Bridge {
 		$template_id = absint( $template_id );
 
 		if ( ! isset( self::SLOTS[ $slot ] ) ) {
-			return new WP_Error( 'mwright_bad_slot', __( 'Unknown email slot.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_bad_slot', __( 'Unknown email slot.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		if ( ! self::form( $form_id ) ) {
-			return new WP_Error( 'mwright_no_form', __( 'That contact form no longer exists.', 'mailwright-for-contact-form-7' ) );
+			return new WP_Error( 'mdmd_no_form', __( 'That contact form no longer exists.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
-		if ( ! MWRIGHT_Template_Post_Type::get( $template_id ) ) {
-			return new WP_Error( 'mwright_no_template', __( 'That template no longer exists.', 'mailwright-for-contact-form-7' ) );
+		if ( ! MDMD_Template_Post_Type::get( $template_id ) ) {
+			return new WP_Error( 'mdmd_no_template', __( 'That template no longer exists.', 'manpreetdev-mail-designer-for-contact-form-7' ) );
 		}
 
 		$map = self::assignments();
@@ -234,7 +234,7 @@ class MWRIGHT_CF7_Bridge {
 
 		update_option( self::OPTION, $map );
 
-		MWRIGHT_Plugin::log(
+		MDMD_Plugin::log(
 			sprintf( 'Template #%d assigned to form #%d (%s email).', $template_id, $form_id, $slot )
 		);
 
@@ -260,7 +260,7 @@ class MWRIGHT_CF7_Bridge {
 
 		update_option( self::OPTION, $map );
 
-		MWRIGHT_Plugin::log( sprintf( 'Template detached from form #%d (%s email).', $form_id, $slot ) );
+		MDMD_Plugin::log( sprintf( 'Template detached from form #%d (%s email).', $form_id, $slot ) );
 
 		return true;
 	}
@@ -276,7 +276,7 @@ class MWRIGHT_CF7_Bridge {
 			return;
 		}
 
-		$is_template = MWRIGHT_Template_Post_Type::POST_TYPE === $post->post_type;
+		$is_template = MDMD_Template_Post_Type::POST_TYPE === $post->post_type;
 		$is_form     = 'wpcf7_contact_form' === $post->post_type;
 
 		if ( ! $is_template && ! $is_form ) {
@@ -467,32 +467,32 @@ class MWRIGHT_CF7_Bridge {
 	 */
 	public static function special_tags() {
 		return array(
-			'_site_title'         => __( 'Site Title', 'mailwright-for-contact-form-7' ),
-			'_site_description'   => __( 'Site Tagline', 'mailwright-for-contact-form-7' ),
-			'_site_url'           => __( 'Site URL', 'mailwright-for-contact-form-7' ),
-			'_site_domain'        => __( 'Site Domain', 'mailwright-for-contact-form-7' ),
-			'_site_admin_email'   => __( 'Site Admin Email', 'mailwright-for-contact-form-7' ),
-			'_contact_form_title' => __( 'Form Title', 'mailwright-for-contact-form-7' ),
-			'_date'               => __( 'Submission Date', 'mailwright-for-contact-form-7' ),
-			'_time'               => __( 'Submission Time', 'mailwright-for-contact-form-7' ),
-			'_url'                => __( 'Page URL', 'mailwright-for-contact-form-7' ),
-			'_remote_ip'          => __( 'Visitor IP', 'mailwright-for-contact-form-7' ),
-			'_user_agent'         => __( 'Browser', 'mailwright-for-contact-form-7' ),
-			'_post_title'         => __( 'Post Title', 'mailwright-for-contact-form-7' ),
-			'_post_url'           => __( 'Post URL', 'mailwright-for-contact-form-7' ),
-			'_post_author'        => __( 'Post Author', 'mailwright-for-contact-form-7' ),
-			'_post_author_email'  => __( 'Post Author Email', 'mailwright-for-contact-form-7' ),
-			'_post_id'            => __( 'Post ID', 'mailwright-for-contact-form-7' ),
-			'_post_name'          => __( 'Post Slug', 'mailwright-for-contact-form-7' ),
-			'_invalid_fields'     => __( 'Invalid Field Count', 'mailwright-for-contact-form-7' ),
+			'_site_title'         => __( 'Site Title', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_site_description'   => __( 'Site Tagline', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_site_url'           => __( 'Site URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_site_domain'        => __( 'Site Domain', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_site_admin_email'   => __( 'Site Admin Email', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_contact_form_title' => __( 'Form Title', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_date'               => __( 'Submission Date', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_time'               => __( 'Submission Time', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_url'                => __( 'Page URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_remote_ip'          => __( 'Visitor IP', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_agent'         => __( 'Browser', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_title'         => __( 'Post Title', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_url'           => __( 'Post URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_author'        => __( 'Post Author', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_author_email'  => __( 'Post Author Email', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_id'            => __( 'Post ID', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_post_name'          => __( 'Post Slug', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_invalid_fields'     => __( 'Invalid Field Count', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			// Contact Form 7 fills these in only when the visitor is logged in.
-			'_user_login'         => __( 'Username', 'mailwright-for-contact-form-7' ),
-			'_user_email'         => __( 'User Email', 'mailwright-for-contact-form-7' ),
-			'_user_display_name'  => __( 'User Display Name', 'mailwright-for-contact-form-7' ),
-			'_user_first_name'    => __( 'User First Name', 'mailwright-for-contact-form-7' ),
-			'_user_last_name'     => __( 'User Last Name', 'mailwright-for-contact-form-7' ),
-			'_user_nickname'      => __( 'User Nickname', 'mailwright-for-contact-form-7' ),
-			'_user_url'           => __( 'User Website', 'mailwright-for-contact-form-7' ),
+			'_user_login'         => __( 'Username', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_email'         => __( 'User Email', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_display_name'  => __( 'User Display Name', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_first_name'    => __( 'User First Name', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_last_name'     => __( 'User Last Name', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_nickname'      => __( 'User Nickname', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			'_user_url'           => __( 'User Website', 'manpreetdev-mail-designer-for-contact-form-7' ),
 		);
 	}
 
@@ -515,7 +515,7 @@ class MWRIGHT_CF7_Bridge {
 		$known = array_merge(
 			self::mail_tags( $form_id ),
 			array_keys( self::special_tags() ),
-			array_keys( MWRIGHT_Branding::tags() )
+			array_keys( MDMD_Branding::tags() )
 		);
 
 		$unknown = array();
@@ -602,7 +602,7 @@ class MWRIGHT_CF7_Bridge {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading the current form ID for display only.
 		$form_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
 
-		if ( ! $form_id || ! current_user_can( MWRIGHT_Plugin::cap() ) ) {
+		if ( ! $form_id || ! current_user_can( MDMD_Plugin::cap() ) ) {
 			return;
 		}
 
@@ -615,7 +615,7 @@ class MWRIGHT_CF7_Bridge {
 		$labels = array();
 
 		foreach ( $assigned as $slot => $template_id ) {
-			$template = MWRIGHT_Template_Post_Type::get( $template_id );
+			$template = MDMD_Template_Post_Type::get( $template_id );
 
 			if ( ! $template ) {
 				continue;
@@ -623,11 +623,11 @@ class MWRIGHT_CF7_Bridge {
 
 			$labels[] = sprintf(
 				'<a href="%s"><strong>%s</strong></a> (%s)',
-				esc_url( MWRIGHT_Plugin::url( 'template-edit', array( 'template' => $template_id ) ) ),
+				esc_url( MDMD_Plugin::url( 'template-edit', array( 'template' => $template_id ) ) ),
 				esc_html( $template['name'] ),
 				'admin' === $slot
-					? esc_html__( 'admin email', 'mailwright-for-contact-form-7' )
-					: esc_html__( 'customer email', 'mailwright-for-contact-form-7' )
+					? esc_html__( 'admin email', 'manpreetdev-mail-designer-for-contact-form-7' )
+					: esc_html__( 'customer email', 'manpreetdev-mail-designer-for-contact-form-7' )
 			);
 		}
 
@@ -637,11 +637,11 @@ class MWRIGHT_CF7_Bridge {
 
 		$message = sprintf(
 			'<p><strong>%s</strong> %s</p><p>%s</p><p><a class="button" href="%s">%s</a></p>',
-			esc_html__( 'Managed by Mailwright for Contact Form 7.', 'mailwright-for-contact-form-7' ),
+			esc_html__( 'Managed by ManpreetDev Mail Designer for Contact Form 7.', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			wp_kses_post( implode( ', ', $labels ) ),
-			esc_html__( 'The Mail settings below are stored by Contact Form 7 but are not used while a template is assigned. Detach the template to hand control back to Contact Form 7 — your settings here are untouched.', 'mailwright-for-contact-form-7' ),
-			esc_url( MWRIGHT_Plugin::url( 'assignments' ) ),
-			esc_html__( 'Manage assignments', 'mailwright-for-contact-form-7' )
+			esc_html__( 'The Mail settings below are stored by Contact Form 7 but are not used while a template is assigned. Detach the template to hand control back to Contact Form 7 — your settings here are untouched.', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			esc_url( MDMD_Plugin::url( 'assignments' ) ),
+			esc_html__( 'Manage assignments', 'manpreetdev-mail-designer-for-contact-form-7' )
 		);
 
 		wp_admin_notice(
@@ -649,7 +649,7 @@ class MWRIGHT_CF7_Bridge {
 			array(
 				'type'               => 'info',
 				'paragraph_wrap'     => false,
-				'additional_classes' => array( 'mwright-managed-notice' ),
+				'additional_classes' => array( 'mdmd-managed-notice' ),
 			)
 		);
 	}
@@ -696,14 +696,14 @@ class MWRIGHT_CF7_Bridge {
 		$names = array();
 
 		foreach ( $assigned as $slot => $template_id ) {
-			$template = MWRIGHT_Template_Post_Type::get( $template_id );
+			$template = MDMD_Template_Post_Type::get( $template_id );
 
 			if ( $template ) {
 				$names[] = $slot . ': ' . $template['name'];
 			}
 		}
 
-		MWRIGHT_Plugin::log(
+		MDMD_Plugin::log(
 			sprintf(
 				'%s — form "%s" (#%d), templates [%s].',
 				$status,

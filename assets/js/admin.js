@@ -1,13 +1,13 @@
 /**
- * Mailwright for Contact Form 7 — shared admin behaviour.
+ * ManpreetDev Mail Designer for Contact Form 7 — shared admin behaviour.
  *
- * Plain ES2020, no framework and no build step. window.mwright carries the
+ * Plain ES2020, no framework and no build step. window.mdmd carries the
  * AJAX URL, the nonce and the translated strings.
  */
 ( function () {
 	'use strict';
 
-	const i18n = ( window.mwright && window.mwright.i18n ) || {};
+	const i18n = ( window.mdmd && window.mdmd.i18n ) || {};
 
 	/* ------------------------------------------------------------------ */
 	/* AJAX                                                                */
@@ -16,19 +16,19 @@
 	/**
 	 * Posts to one of the plugin's AJAX endpoints.
 	 *
-	 * @param {string} action Action name without the mwright_ prefix.
+	 * @param {string} action Action name without the mdmd_ prefix.
 	 * @param {Object} data   Payload; nested objects are sent as form fields.
 	 * @return {Promise<Object>} The data half of the JSON response.
 	 */
 	function post( action, data ) {
 		const body = new FormData();
 
-		body.append( 'action', 'mwright_' + action );
-		body.append( 'nonce', window.mwright.nonce );
+		body.append( 'action', 'mdmd_' + action );
+		body.append( 'nonce', window.mdmd.nonce );
 
 		append( body, data || {}, null );
 
-		return fetch( window.mwright.ajaxUrl, {
+		return fetch( window.mdmd.ajaxUrl, {
 			method: 'POST',
 			credentials: 'same-origin',
 			body: body,
@@ -79,14 +79,14 @@
 	function toast( message, type ) {
 		if ( ! toastHost ) {
 			toastHost = document.createElement( 'div' );
-			toastHost.className = 'mwright-toasts mwright';
+			toastHost.className = 'mdmd-toasts mdmd';
 			toastHost.setAttribute( 'aria-live', 'polite' );
 			document.body.appendChild( toastHost );
 		}
 
 		const node = document.createElement( 'div' );
 
-		node.className = 'mwright-toast mwright-toast--' + ( type || 'success' );
+		node.className = 'mdmd-toast mdmd-toast--' + ( type || 'success' );
 		node.textContent = message;
 		toastHost.appendChild( node );
 
@@ -107,28 +107,28 @@
 		const previous = document.activeElement;
 
 		const overlay = document.createElement( 'div' );
-		overlay.className = 'mwright-modal mwright' + ( options.wide ? ' mwright-modal--wide' : '' );
+		overlay.className = 'mdmd-modal mdmd' + ( options.wide ? ' mdmd-modal--wide' : '' );
 
 		const box = document.createElement( 'div' );
-		box.className = 'mwright-modal__box';
+		box.className = 'mdmd-modal__box';
 		box.setAttribute( 'role', 'dialog' );
 		box.setAttribute( 'aria-modal', 'true' );
 		box.setAttribute( 'aria-label', options.title || '' );
 
 		const head = document.createElement( 'div' );
-		head.className = 'mwright-modal__head';
+		head.className = 'mdmd-modal__head';
 		head.innerHTML = '<h2></h2>';
 		head.querySelector( 'h2' ).textContent = options.title || '';
 
 		const close = document.createElement( 'button' );
 		close.type = 'button';
-		close.className = 'mwright-modal__close';
+		close.className = 'mdmd-modal__close';
 		close.setAttribute( 'aria-label', i18n.close || 'Close' );
 		close.innerHTML = '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>';
 		head.appendChild( close );
 
 		const body = document.createElement( 'div' );
-		body.className = 'mwright-modal__body' + ( options.flush ? ' mwright-modal__body--flush' : '' );
+		body.className = 'mdmd-modal__body' + ( options.flush ? ' mdmd-modal__body--flush' : '' );
 
 		if ( options.body instanceof Node ) {
 			body.appendChild( options.body );
@@ -141,13 +141,13 @@
 
 		if ( options.buttons && options.buttons.length ) {
 			const foot = document.createElement( 'div' );
-			foot.className = 'mwright-modal__foot';
+			foot.className = 'mdmd-modal__foot';
 
 			options.buttons.forEach( ( config ) => {
 				const button = document.createElement( 'button' );
 
 				button.type = 'button';
-				button.className = 'mwright-btn ' + ( config.className || '' );
+				button.className = 'mdmd-btn ' + ( config.className || '' );
 				button.textContent = config.label;
 				button.addEventListener( 'click', () => config.onClick ? config.onClick( handle ) : handle.close() );
 				foot.appendChild( button );
@@ -214,7 +214,7 @@
 		} );
 		document.addEventListener( 'keydown', onKeydown, true );
 
-		( box.querySelector( '.mwright-modal__foot .mwright-btn' ) || close ).focus();
+		( box.querySelector( '.mdmd-modal__foot .mdmd-btn' ) || close ).focus();
 
 		return handle;
 	}
@@ -236,7 +236,7 @@
 				},
 				{
 					label: options.confirmLabel || i18n.confirm,
-					className: options.danger === false ? 'mwright-btn--primary' : 'mwright-btn--danger',
+					className: options.danger === false ? 'mdmd-btn--primary' : 'mdmd-btn--danger',
 					onClick: ( handle ) => {
 						handle.close();
 						onAccept();
@@ -251,12 +251,12 @@
 	/* ------------------------------------------------------------------ */
 
 	document.addEventListener( 'click', ( event ) => {
-		const duplicate = event.target.closest( '[data-mwright-duplicate]' );
+		const duplicate = event.target.closest( '[data-mdmd-duplicate]' );
 
 		if ( duplicate ) {
 			event.preventDefault();
 
-			post( 'duplicate_template', { template_id: duplicate.dataset.mwrightDuplicate } )
+			post( 'duplicate_template', { template_id: duplicate.dataset.mdmdDuplicate } )
 				.then( ( data ) => {
 					toast( data.message, 'success' );
 					window.location.href = data.editUrl;
@@ -266,12 +266,12 @@
 			return;
 		}
 
-		const remove = event.target.closest( '[data-mwright-delete]' );
+		const remove = event.target.closest( '[data-mdmd-delete]' );
 
 		if ( remove ) {
 			event.preventDefault();
 
-			const id = remove.dataset.mwrightDelete;
+			const id = remove.dataset.mdmdDelete;
 			const name = remove.dataset.name || '';
 
 			confirmAction(
@@ -297,7 +297,7 @@
 		}
 
 		// Details opens the whole submission under its row.
-		const entryToggle = event.target.closest( '[data-mwright-entry-toggle]' );
+		const entryToggle = event.target.closest( '[data-mdmd-entry-toggle]' );
 
 		if ( entryToggle ) {
 			const row = document.getElementById( entryToggle.getAttribute( 'aria-controls' ) );
@@ -313,8 +313,8 @@
 			return;
 		}
 
-		// Any link that carries data-mwright-confirm asks first, then follows.
-		const guarded = event.target.closest( '[data-mwright-confirm]' );
+		// Any link that carries data-mdmd-confirm asks first, then follows.
+		const guarded = event.target.closest( '[data-mdmd-confirm]' );
 
 		if ( guarded ) {
 			event.preventDefault();
@@ -322,7 +322,7 @@
 			confirmAction(
 				{
 					title: i18n.confirm,
-					message: guarded.dataset.mwrightConfirm,
+					message: guarded.dataset.mdmdConfirm,
 					// The link already names the action; reuse it on the button.
 					confirmLabel: guarded.textContent.trim() || i18n.confirm,
 				},
@@ -337,7 +337,7 @@
 	/* Assignments screen                                                  */
 	/* ------------------------------------------------------------------ */
 
-	document.querySelectorAll( '.mwright-assign' ).forEach( ( cell ) => {
+	document.querySelectorAll( '.mdmd-assign' ).forEach( ( cell ) => {
 		const row = cell.closest( 'tr' );
 		const select = cell.querySelector( '[data-template-select]' );
 		const apply = cell.querySelector( '[data-action="apply"]' );
@@ -424,7 +424,7 @@
 		} );
 	}
 
-	document.querySelectorAll( '.mwright-color' ).forEach( ( wrap ) => {
+	document.querySelectorAll( '.mdmd-color' ).forEach( ( wrap ) => {
 		const picker = wrap.querySelector( '[data-color-input]' );
 		const hex = wrap.querySelector( '[data-color-hex]' );
 
@@ -449,5 +449,5 @@
 	/* Export                                                              */
 	/* ------------------------------------------------------------------ */
 
-	window.mwrightUI = { post, toast, modal, confirmAction };
+	window.mdmdUI = { post, toast, modal, confirmAction };
 } )();
