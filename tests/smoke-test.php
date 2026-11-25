@@ -438,7 +438,7 @@ mdmd_check(
 $live = WPCF7_ContactForm::get_template( array( 'title' => 'MDMD Capture Form' ) );
 
 $live->set_properties(
-	array( 'form' => "[text* your-name]\n[email* your-email]\n[textarea your-message]" )
+	array( 'form' => "[text* your-name]\n[email* your-email]\n[textarea your-message]\n[file your-cv]" )
 );
 
 $live_id = $live->save();
@@ -457,9 +457,15 @@ $_POST = array(
 	'your-message'    => "First line\nSecond line",
 );
 
+// What a browser posts for an optional upload nobody filled in.
+$_FILES = array(
+	'your-cv' => array( 'name' => '', 'type' => '', 'tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'size' => 0 ),
+);
+
 $submit_result = WPCF7_ContactForm::get_instance( $live_id )->submit();
 
-$_POST = array();
+$_POST  = array();
+$_FILES = array();
 
 remove_filter( 'pre_wp_mail', '__return_true' );
 remove_filter( 'wpcf7_skip_spam_check', '__return_true' );
@@ -477,6 +483,12 @@ mdmd_check(
 	'Captured answers match what was posted',
 	$logged && 'Jane Tester' === ( $logged['fields']['your-name'] ?? '' )
 		&& "First line\nSecond line" === ( $logged['fields']['your-message'] ?? '' ),
+	wp_json_encode( $logged['fields'] ?? array() )
+);
+
+mdmd_check(
+	'An upload field left empty is not recorded as an answer',
+	$logged && ! array_key_exists( 'your-cv', $logged['fields'] ),
 	wp_json_encode( $logged['fields'] ?? array() )
 );
 
@@ -530,6 +542,43 @@ mdmd_check(
 		&& 'type' === ( $stored['your-code'][0]['error'] ?? '' ),
 	wp_json_encode( $stored['your-code'] ?? array() )
 );
+
+/*
+ * CF7 6.2.4+ renames uploads outside its extension safelist. Source files are
+ * named by CF7's own function, so this holds on older versions too.
+ */
+$renamed_names = array( 'cv.docx', 'v1.2.txt', 'shell.php' );
+$renamed_paths = array();
+
+foreach ( $renamed_names as $renamed_name ) {
+	$renamed_paths[] = $source_dir . '/' . wpcf7_antiscript_file_name( $renamed_name );
+	file_put_contents( end( $renamed_paths ), 'renamed body' );
+}
+
+$_FILES  = array( 'your-files' => array( 'name' => $renamed_names ) );
+$renamed = MDMD_Submissions::store_files( array( 'your-files' => $renamed_paths ) )['your-files'];
+
+mdmd_check( 'A document CF7 renamed gets its own name back', 'cv.docx' === $renamed[0]['name'] && str_ends_with( $renamed[0]['path'], '/cv.docx' ), wp_json_encode( $renamed ) );
+mdmd_check( 'A text file with dots in its name is still stored', 'v1.2.txt' === $renamed[1]['name'] && '' !== $renamed[1]['path'], wp_json_encode( $renamed ) );
+mdmd_check( 'A script CF7 renamed to .txt is still never stored', '' === $renamed[2]['path'] && 'type' === ( $renamed[2]['error'] ?? '' ), wp_json_encode( $renamed ) );
+
+// A posted name CF7 did not turn into this file must not be believed.
+$_FILES   = array( 'your-files' => array( 'name' => 'other.docx' ) );
+$mismatch = MDMD_Submissions::store_files( array( 'your-files' => array( $source_file ) ) )['your-files'];
+$_FILES   = array();
+
+mdmd_check( 'A posted name that does not match the file is ignored', 'notes.txt' === $mismatch[0]['name'], wp_json_encode( $mismatch ) );
+
+foreach ( array_merge( $renamed, $mismatch ) as $renamed_file ) {
+	$renamed_path = MDMD_Submissions::file_path( $renamed_file['path'] );
+
+	if ( $renamed_path ) {
+		unlink( $renamed_path );
+		@rmdir( dirname( $renamed_path ) );
+	}
+}
+
+array_map( 'unlink', $renamed_paths );
 
 mdmd_check(
 	'The upload folder is closed to the web',
@@ -744,7 +793,9 @@ foreach ( array( 'get_posted_data', 'uploaded_files', 'get_meta' ) as $method ) 
 	mdmd_check( 'WPCF7_Submission::' . $method . '() exists', method_exists( 'WPCF7_Submission', $method ) );
 }
 
-mdmd_check( 'wpcf7_is_name() exists', function_exists( 'wpcf7_is_name' ) );
+foreach ( array( 'wpcf7_is_name', 'wpcf7_array_flatten', 'wpcf7_canonicalize', 'wpcf7_antiscript_file_name' ) as $function ) {
+	mdmd_check( $function . '() exists', function_exists( $function ) );
+}
 mdmd_check( 'File tag types still discoverable', array() !== MDMD_CF7_Bridge::file_tag_types(), implode( ', ', MDMD_CF7_Bridge::file_tag_types() ) );
 
 // A full HTML document must not be wrapped a second time by CF7.

@@ -3,7 +3,7 @@
  * Plugin Name:       ManpreetDev Mail Designer for Contact Form 7
  * Plugin URI:        https://github.com/manpreetdev21/manpreetdev-mail-designer-for-contact-form-7
  * Description:       Reusable, brandable email templates for Contact Form 7. Design once, assign to any form — without ever overwriting Contact Form 7's own mail settings.
- * Version:           2.0.0
+ * Version:           2.0.1
  * Author:            Manpreet Singh
  * Author URI:        https://github.com/manpreetdev21/
  * License:           GPL-2.0-or-later
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MDMD_VERSION', '2.0.0' );
+define( 'MDMD_VERSION', '2.0.1' );
 define( 'MDMD_FILE', __FILE__ );
 define( 'MDMD_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MDMD_URL', plugin_dir_url( __FILE__ ) );

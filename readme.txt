@@ -4,7 +4,7 @@ Tags: contact form 7, email template, html email, email designer, submissions
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,14 @@ Yes. Contact Form 7 still sends the mail through WordPress, so any SMTP plugin k
 
 Almost always because the logo URL points at a host the recipient cannot reach — localhost and .local addresses are the usual culprits. It renders in the admin preview because your browser is on that machine. Global Branding warns you when it spots one.
 
+= Why is an emailed attachment called cv.docx_.txt? =
+
+Contact Form 7 6.2.4 and newer rename uploads whose extension is not on its safelist (audio, video, images, PDF and TXT) before emailing them. Submissions keeps the original name. To change what Contact Form 7 emails, add extensions with its `wpcf7_file_extension_safelist` filter.
+
+= Why is [_post_title] empty in my email? =
+
+Contact Form 7 6.2.5 and newer leave the [_post_*] tags empty when the page holding the form is private, a draft or password-protected.
+
 = What happens to my data if I delete the plugin? =
 
 Templates, submissions and stored files all stay. They are only removed if you tick "Delete all plugin data" in Settings → Advanced first.
@@ -86,6 +94,12 @@ Templates, submissions and stored files all stay. They are only removed if you t
 3. Global branding, shared by every template.
 
 == Changelog ==
+
+= 2.0.1 =
+* Checked against Contact Form 7 6.2.6, which itself needs WordPress 7.1 and PHP 8.3.
+* Fix: Contact Form 7 6.2.4+ renames uploads such as cv.docx to cv.docx_.txt. Submissions stores and downloads new uploads under their original name again.
+* Fix: the same renaming let file types WordPress does not allow be stored as .txt. They are once more recorded by name only.
+* Fix: an optional upload field left empty was recorded as a blank answer on Contact Form 7 6.2.4+.
 
 = 2.0.0 =
 * Renamed the plugin to ManpreetDev Mail Designer for Contact Form 7. Existing templates, submissions, branding and settings are migrated automatically on the first admin page load.
@@ -136,6 +150,9 @@ Templates, submissions and stored files all stay. They are only removed if you t
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+Compatibility fixes for file uploads with Contact Form 7 6.2.4 to 6.2.6.
 
 = 1.4.1 =
 Compatibility pass for Contact Form 7 6.2, plus the special mail-tags that were missing from the editor sidebar.

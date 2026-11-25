@@ -4,9 +4,9 @@ Reusable, brandable email templates for Contact Form 7 — design once, assign t
 
 | | |
 |---|---|
-| **Version** | 2.0.0 |
+| **Version** | 2.0.1 |
 | **Requires** | WordPress 6.5+, PHP 8.1+, Contact Form 7 5.8+ |
-| **Tested up to** | WordPress 7.1, Contact Form 7 6.2 |
+| **Tested up to** | WordPress 7.1, Contact Form 7 6.2.6 (which itself needs WordPress 7.1 and PHP 8.3) |
 | **License** | GPL-2.0-or-later |
 
 ---
@@ -78,6 +78,7 @@ Contact Form 7 deletes its copy of an upload as soon as the request ends, so eac
 - The directory is closed to the web with an `.htaccess` deny rule and an `index.html`
 - The only route to a file is an authenticated, nonce-checked admin download
 - File types WordPress does not allow are recorded by name but never written to disk
+- Contact Form 7 6.2.4+ renames uploads outside its extension safelist (`cv.docx` becomes `cv.docx_.txt`); the stored copy keeps the original name
 - Deleting a submission deletes its files
 
 ## Development
@@ -104,10 +105,23 @@ Yes. Contact Form 7 still sends the mail through WordPress, so any SMTP plugin k
 **Why is my logo missing from the email I received?**
 Almost always because the logo URL points at a host the recipient cannot reach — `localhost` and `*.local` are the usual culprits. It renders in the admin preview because your browser is on that machine. Global Branding warns you when it spots one.
 
+**Why is an emailed attachment called `cv.docx_.txt`?**
+Contact Form 7 6.2.4 and newer rename uploads whose extension is not on its safelist (audio, video, images, PDF and TXT) before emailing them. Submissions keeps the original name. To change what Contact Form 7 emails, add extensions with its `wpcf7_file_extension_safelist` filter.
+
+**Why is `[_post_title]` empty in my email?**
+Contact Form 7 6.2.5 and newer leave the `[_post_*]` tags empty when the page holding the form is private, a draft or password-protected.
+
 **What happens to my data if I delete the plugin?**
 Templates, submissions and stored files all stay. They are only removed if you tick **Delete all plugin data** in Settings → Advanced first.
 
 ## Changelog
+
+### 2.0.1
+- Checked against Contact Form 7 6.2.6. Of everything that changed since 6.2, only upload handling and the `[_post_*]` mail-tags touch this plugin.
+- Fix: Contact Form 7 6.2.4+ renames uploads such as `cv.docx` to `cv.docx_.txt`. Submissions stores and downloads new uploads under their original name again.
+- Fix: the same renaming let file types WordPress does not allow be stored as `.txt`. They are once more recorded by name only.
+- Fix: an optional upload field left empty was recorded as a blank answer on Contact Form 7 6.2.4+.
+- The smoke test covers all three, plus the Contact Form 7 functions they rely on.
 
 ### 2.0.0
 - Renamed the plugin to **ManpreetDev Mail Designer for Contact Form 7**. Existing templates, submissions, branding and settings migrate automatically on the first admin page load.

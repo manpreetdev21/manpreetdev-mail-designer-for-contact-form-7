@@ -126,7 +126,7 @@ class MDMD_Submissions {
 				'form_id'      => $contact_form->id(),
 				'form_title'   => $contact_form->title(),
 				'status'       => 'mail_sent' === $status ? 'sent' : 'failed',
-				'fields'       => (string) wp_json_encode( self::posted_fields( $submission, $uploads ) ),
+				'fields'       => (string) wp_json_encode( self::posted_fields( $submission, $uploads, $contact_form ) ),
 				'files'        => (string) wp_json_encode( self::store_files( $uploads ) ),
 				'remote_ip'    => (string) $submission->get_meta( 'remote_ip' ),
 				'submitted_at' => current_time( 'mysql' ),
@@ -138,12 +138,14 @@ class MDMD_Submissions {
 	/**
 	 * The visitor's own answers, without Contact Form 7's internal fields.
 	 *
-	 * @param WPCF7_Submission $submission Live submission.
-	 * @param array            $uploads    Upload fields, which are recorded separately.
+	 * @param WPCF7_Submission  $submission   Live submission.
+	 * @param array             $uploads      Upload fields, which are recorded separately.
+	 * @param WPCF7_ContactForm $contact_form Submitted form.
 	 * @return array Field name => value.
 	 */
-	private static function posted_fields( $submission, $uploads = array() ) {
-		$fields = array();
+	private static function posted_fields( $submission, $uploads, $contact_form ) {
+		$fields      = array();
+		$file_fields = wp_list_pluck( $contact_form->scan_form_tags( array( 'feature' => 'file-uploading' ) ), 'name' );
 
 		foreach ( (array) $submission->get_posted_data() as $name => $value ) {
 			// _wpcf7, _wpcf7_unit_tag and friends are plumbing, not answers.
@@ -157,6 +159,15 @@ class MDMD_Submissions {
 			 * and the file itself is kept in the files column.
 			 */
 			if ( array_key_exists( $name, $uploads ) ) {
+				continue;
+			}
+
+			/*
+			 * Since Contact Form 7 6.2.4 an upload field left empty is missing
+			 * from uploaded_files(). Only the empty ones are skipped: upload
+			 * add-ons may post a real value, such as a link to the file.
+			 */
+			if ( ! $value && in_array( $name, $file_fields, true ) ) {
 				continue;
 			}
 
@@ -189,7 +200,7 @@ class MDMD_Submissions {
 					continue;
 				}
 
-				$original = wp_basename( $source );
+				$original = self::original_name( $name, wp_basename( $source ) );
 
 				// WordPress already decides which file types are safe to keep.
 				if ( ! wp_check_filetype( $original )['type'] ) {
@@ -222,6 +233,37 @@ class MDMD_Submissions {
 					'path' => $folder . '/' . wp_basename( $target ),
 					'size' => (int) filesize( $target ),
 				);
+			}
+		}
+
+		return $stored;
+	}
+
+	/**
+	 * The name a file had before Contact Form 7 made it safe to email.
+	 *
+	 * Since 6.2.4, CF7 renames every upload outside a short list of extensions:
+	 * cv.docx becomes cv.docx_.txt, and shell.php becomes shell.php_.txt.
+	 * Undoing that gives the visitor's document its name back, and lets the
+	 * file-type check in store_files() see what the file really is.
+	 *
+	 * The suffix cannot simply be stripped, because v1.2.txt also arrives as
+	 * v1.2_.txt. So the posted name is only trusted when CF7 itself would have
+	 * turned it into the name on disk; anything else keeps CF7's name.
+	 *
+	 * @param string $field  Field name.
+	 * @param string $stored File name CF7 gave the upload.
+	 * @return string
+	 */
+	private static function original_name( $field, $stored ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput -- CF7 has already handled the submission; sanitized below, once compared with the name CF7 derived from it.
+		$names = wpcf7_array_flatten( $_FILES[ $field ]['name'] ?? array() );
+
+		foreach ( $names as $name ) {
+			$renamed = wpcf7_antiscript_file_name( wpcf7_canonicalize( $name, array( 'strto' => 'as-is' ) ) );
+
+			if ( $renamed === $stored ) {
+				return sanitize_file_name( $name );
 			}
 		}
 

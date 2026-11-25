@@ -478,6 +478,7 @@ class MDMD_CF7_Bridge {
 			'_url'                => __( 'Page URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_remote_ip'          => __( 'Visitor IP', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_user_agent'         => __( 'Browser', 'manpreetdev-mail-designer-for-contact-form-7' ),
+			// Empty when the page holding the form is private, draft or password-protected (CF7 6.2.5+).
 			'_post_title'         => __( 'Post Title', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_post_url'           => __( 'Post URL', 'manpreetdev-mail-designer-for-contact-form-7' ),
 			'_post_author'        => __( 'Post Author', 'manpreetdev-mail-designer-for-contact-form-7' ),
